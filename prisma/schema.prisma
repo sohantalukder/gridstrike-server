@@ -1,0 +1,292 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum AuthMode {
+  email
+  guest
+}
+
+enum LeaderboardType {
+  practice
+  survival
+  missions
+  daily
+}
+
+enum MatchStatus {
+  victory
+  defeat
+}
+
+model User {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  username    String
+  passwordHash String?
+  authMode    AuthMode @default(email)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  deletedAt   DateTime?
+  profile     PlayerProfile?
+  refreshTokens RefreshToken[]
+}
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  userId    String
+  tokenHash String
+  expiresAt DateTime
+  isRevoked Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model PlayerProfile {
+  id                  String   @id @default(cuid())
+  userId              String   @unique
+  displayName         String
+  avatar              String?
+  level               Int      @default(1)
+  experience          Int      @default(0)
+  coins               Int      @default(0)
+  rank                Int      @default(0)
+  totalGames          Int      @default(0)
+  totalKills          Int      @default(0)
+  totalSurvivalSeconds Int      @default(0)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  deletedAt           DateTime?
+
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  gameResults    GameResult[]
+  rewards        PlayerReward[]
+  leaderboardEntries LeaderboardEntry[]
+  inventoryItems PlayerInventoryItem[]
+  settings       PlayerSettings?
+}
+
+model Weapon {
+  id        String @id @default(cuid())
+  name      String
+  rarity    String
+}
+
+model Ability {
+  id        String @id @default(cuid())
+  name      String
+  rarity    String
+}
+
+model Loadout {
+  id        String @id @default(cuid())
+  playerProfileId String
+  name      String
+  weaponId  String
+  primaryAbilityId String
+  secondaryAbilityId String
+  isSelected Boolean @default(false)
+}
+
+model Mission {
+  id         String   @id @default(cuid())
+  title      String
+  description String
+  objective  String
+  target     Int
+  rewardXp   Int
+  rewardCoins Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model DailyChallenge {
+  id         String @id @default(cuid())
+  description String
+  date       DateTime
+  rewardXp   Int
+  rewardCoins Int
+}
+
+model GameResult {
+  id            String        @id @default(cuid())
+  playerProfileId String
+  idempotencyKey String       @unique
+  mode          String
+  status        MatchStatus
+  score         Int
+  kills         Int
+  durationSeconds Int
+  nodesCaptured  Int
+  damageTaken   Float
+  coins         Int
+  experience    Int
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  playerProfile PlayerProfile @relation(fields: [playerProfileId], references: [id], onDelete: Cascade)
+
+  @@index([playerProfileId])
+}
+
+model PlayerReward {
+  id        String @id @default(cuid())
+  playerProfileId String
+  kind      String
+  amount    Int
+  status    String
+  referenceId String
+  createdAt DateTime @default(now())
+
+  playerProfile PlayerProfile @relation(fields: [playerProfileId], references: [id], onDelete: Cascade)
+}
+
+model PlayerInventoryItem {
+  id              String   @id @default(cuid())
+  playerProfileId String
+  itemId          String
+  level           Int      @default(1)
+  unlockedAt      DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  playerProfile PlayerProfile @relation(fields: [playerProfileId], references: [id], onDelete: Cascade)
+
+  @@unique([playerProfileId, itemId])
+  @@index([playerProfileId])
+}
+
+model PlayerSettings {
+  id              String   @id @default(cuid())
+  playerProfileId String   @unique
+  music           Float    @default(0.55)
+  sfx             Float    @default(0.75)
+  haptic          Boolean  @default(true)
+  joystickOpacity Float    @default(0.8)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  playerProfile PlayerProfile @relation(fields: [playerProfileId], references: [id], onDelete: Cascade)
+}
+
+model MultiplayerRoom {
+  id           String   @id @default(cuid())
+  code         String   @unique
+  status       String
+  hostPlayerId String
+  matchId      String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([code])
+  @@index([hostPlayerId])
+}
+
+model MultiplayerRoomPlayer {
+  id          String   @id @default(cuid())
+  roomId      String
+  playerId    String
+  displayName String
+  ready       Boolean  @default(false)
+  connected   Boolean  @default(false)
+  loadoutId   String?
+  socketId    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([roomId, playerId])
+  @@index([roomId])
+  @@index([playerId])
+}
+
+model MultiplayerMatch {
+  id         String   @id @default(cuid())
+  mode       String
+  status     String
+  roomId     String?
+  botMatch   Boolean  @default(false)
+  winnerId   String?
+  createdAt  DateTime @default(now())
+  startedAt  DateTime?
+  finishedAt DateTime?
+
+  @@index([roomId])
+  @@index([winnerId])
+}
+
+model MatchParticipant {
+  id          String   @id @default(cuid())
+  matchId     String
+  playerId    String
+  displayName String
+  health      Int      @default(100)
+  score       Int      @default(0)
+  kills       Int      @default(0)
+  connected   Boolean  @default(true)
+  bot         Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([matchId, playerId])
+  @@index([matchId])
+  @@index([playerId])
+}
+
+model ReconnectSession {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  playerId  String
+  matchId   String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([playerId])
+  @@index([matchId])
+}
+
+model LeaderboardEntry {
+  id        String @id @default(cuid())
+  playerProfileId String
+  leaderboardType LeaderboardType
+  score Int
+  rank Int
+  updatedAt DateTime @default(now()) @updatedAt
+
+  playerProfile PlayerProfile @relation(fields: [playerProfileId], references: [id], onDelete: Cascade)
+
+  @@index([leaderboardType])
+  @@unique([playerProfileId, leaderboardType])
+}
+
+model Achievement {
+  id        String @id @default(cuid())
+  key       String @unique
+  title     String
+  description String
+}
+
+model PlayerAchievement {
+  id        String @id @default(cuid())
+  playerProfileId String
+  achievementId String
+  unlockedAt DateTime @default(now())
+
+  playerProfile PlayerProfile @relation(fields: [playerProfileId], references: [id], onDelete: Cascade)
+  achievement Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+
+  @@unique([playerProfileId, achievementId])
+}
+
+model AppConfig {
+  id        String @id @default(cuid())
+  version   Int
+  payload   Json
+  updatedAt DateTime @updatedAt
+}
