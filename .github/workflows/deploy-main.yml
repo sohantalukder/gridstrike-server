@@ -80,18 +80,17 @@ jobs:
             # run DB migrations in CI/CD only if you want:
             # npm run db:migrate:prod
 
-            if command -v pm2 >/dev/null 2>&1; then
-              if pm2 describe "$APP_NAME" > /dev/null 2>&1; then
-                pm2 restart "$APP_NAME" --update-env
-              else
-                pm2 start dist/main.js --name "$APP_NAME"
-              fi
-              pm2 save
-            else
-              echo "PM2 is required on the server for zero-downtime process management."
-              echo "Install it once with: npm i -g pm2"
-              exit 1
+            if ! command -v pm2 >/dev/null 2>&1; then
+              echo "PM2 missing. Installing globally..."
+              npm i -g pm2
             fi
+
+            if pm2 describe "$APP_NAME" > /dev/null 2>&1; then
+              pm2 restart "$APP_NAME" --update-env
+            else
+              pm2 start dist/main.js --name "$APP_NAME"
+            fi
+            pm2 save
 
             # quick health check through the app
             if command -v curl >/dev/null 2>&1; then
