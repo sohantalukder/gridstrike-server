@@ -1,22 +1,21 @@
 import {
   IsEmail,
+  IsOptional,
   IsString,
   Matches,
   MaxLength,
   MinLength,
 } from "class-validator";
 
-export class RegisterDto {
+export class AvailabilityDto {
+  @IsOptional()
   @IsEmail()
-  email!: string;
+  email?: string;
 
-  @IsString()
-  @MinLength(8)
-  password!: string;
-
+  @IsOptional()
   @IsString()
   @MinLength(3)
   @MaxLength(20)
   @Matches(/^[A-Za-z0-9_]+$/)
-  username!: string;
+  username?: string;
 }
