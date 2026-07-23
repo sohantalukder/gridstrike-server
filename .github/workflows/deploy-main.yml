@@ -1,0 +1,80 @@
+name: Deploy to Cloudflare-fronted server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: gridstrike-server-deploy
+      cancel-in-progress: true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build backend
+        run: npm run build
+
+      - name: Deploy to production host
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.PROD_SSH_USER }}
+          key: ${{ secrets.PROD_SSH_KEY }}
+          port: ${{ secrets.PROD_SSH_PORT || 22 }}
+          script_stop: true
+          command_timeout: 20m
+          script: |
+            set -euo pipefail
+
+            APP_DIR="${{ secrets.PROD_APP_DIR }}"
+            APP_DIR="${APP_DIR:-/home/${{ secrets.PROD_SSH_USER }}/gridstrike-server}"
+            APP_NAME="gridstrike-server"
+            REPO_URL="${{ github.server_url }}/${{ github.repository }}.git"
+
+            if [ ! -d "$APP_DIR" ]; then
+              mkdir -p "$(dirname "$APP_DIR")"
+              git clone "$REPO_URL" "$APP_DIR"
+            fi
+
+            cd "$APP_DIR"
+            git fetch --all --prune
+            git checkout main
+            git reset --hard origin/main
+
+            npm ci
+            npm run build
+
+            # run DB migrations in CI/CD only if you want:
+            # npm run db:migrate:prod
+
+            if command -v pm2 >/dev/null 2>&1; then
+              if pm2 describe "$APP_NAME" > /dev/null 2>&1; then
+                pm2 restart "$APP_NAME" --update-env
+              else
+                pm2 start dist/main.js --name "$APP_NAME"
+              fi
+              pm2 save
+            else
+              echo "PM2 is required on the server for zero-downtime process management."
+              echo "Install it once with: npm i -g pm2"
+              exit 1
+            fi
+
+            # quick health check through the app
+            if command -v curl >/dev/null 2>&1; then
+              curl -fsS http://127.0.0.1:3000/api/v1/health | cat
+            fi
