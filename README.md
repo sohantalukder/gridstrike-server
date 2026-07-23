@@ -86,6 +86,7 @@ Recommended Cloudflare settings:
 - Root directory: `/`
 - Build command: `npm run build`
 - Deploy command: `npx wrangler deploy`
+- API token: use a custom token with `Workers Scripts: Edit` and `Containers: Edit`
 
 For details, see:
 

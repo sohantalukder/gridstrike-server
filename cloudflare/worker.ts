@@ -3,7 +3,7 @@
 import { Container, getContainer } from '@cloudflare/containers';
 
 export interface Env {
-  GRIDSTRIKE_SERVER: DurableObjectNamespace<GridStrikeServerContainer>;
+  GRIDSTRIKE_API_CONTAINER: DurableObjectNamespace<GridStrikeApiContainer>;
   SUPABASE_URL?: string;
   SUPABASE_PUBLISHABLE_KEY?: string;
   SUPABASE_SECRET_KEY?: string;
@@ -19,7 +19,7 @@ export interface Env {
   JWT_REFRESH_EXPIRES_IN?: string;
 }
 
-export class GridStrikeServerContainer extends Container {
+export class GridStrikeApiContainer extends Container {
   defaultPort = 8080;
   sleepAfter = '2h';
 }
@@ -46,7 +46,7 @@ function containerEnv(env: Env): Record<string, string> {
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
-    const container = getContainer(env.GRIDSTRIKE_SERVER, 'api');
+    const container = getContainer(env.GRIDSTRIKE_API_CONTAINER, 'api');
 
     await container.startAndWaitForPorts({
       ports: 8080,

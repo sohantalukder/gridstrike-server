@@ -9,7 +9,7 @@
   },
   "containers": [
     {
-      "class_name": "GridStrikeServerContainer",
+      "class_name": "GridStrikeApiContainer",
       "image": "./Dockerfile",
       "max_instances": 1,
       "instance_type": "lite"
@@ -18,15 +18,15 @@
   "durable_objects": {
     "bindings": [
       {
-        "name": "GRIDSTRIKE_SERVER",
-        "class_name": "GridStrikeServerContainer"
+        "name": "GRIDSTRIKE_API_CONTAINER",
+        "class_name": "GridStrikeApiContainer"
       }
     ]
   },
   "migrations": [
     {
-      "tag": "v1",
-      "new_sqlite_classes": ["GridStrikeServerContainer"]
+      "tag": "v2-gridstrike-api-container",
+      "new_sqlite_classes": ["GridStrikeApiContainer"]
     }
   ]
 }
