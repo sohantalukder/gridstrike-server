@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="12" tilewidth="64" tileheight="64" infinite="0" nextlayerid="8" nextobjectid="14">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="12" tilewidth="64" tileheight="64" infinite="0" nextlayerid="8" nextobjectid="15">
  <properties>
-  <property name="chunkId" value="rooftop-relay"/>
+  <property name="chunkId" value="furnace-lane"/>
   <property name="role" value="combat"/>
  </properties>
  <imagelayer id="1" name="ParallaxFar" visible="0">
@@ -27,41 +27,43 @@
   <object id="6" name="enemy-3-a" type="enemy-spawn" x="900" y="550" width="1" height="1">
    <point/>
    <properties>
-    <property name="enemy" value="rifleman"/>
+    <property name="enemy" value="heavy"/>
    </properties>
   </object>
   <object id="7" name="enemy-3-b" type="enemy-spawn" x="1330" y="520" width="1" height="1">
    <point/>
    <properties>
-    <property name="enemy" value="drone"/>
+    <property name="enemy" value="rifleman"/>
    </properties>
   </object>
   <object id="8" name="pickup-ammo" type="pickup-ammo" x="1080" y="520" width="1" height="1">
    <point/>
   </object>
+  <object id="9" name="fire-hazard" type="fire" x="1110" y="545" width="210" height="58">
+  </object>
  </objectgroup>
  <objectgroup id="5" name="Navigation">
-  <object id="9" name="nav-start" type="nav-start" x="80" y="540" width="1" height="1">
+  <object id="10" name="nav-start" type="nav-start" x="80" y="540" width="1" height="1">
    <point/>
   </object>
-  <object id="10" name="nav-end" type="nav-end" x="1840" y="500" width="1" height="1">
+  <object id="11" name="nav-end" type="nav-end" x="1840" y="500" width="1" height="1">
    <point/>
   </object>
  </objectgroup>
  <objectgroup id="6" name="PropsBack">
-  <object id="11" name="prop-3-a" type="prop-droneWreck" x="305" y="430" width="90" height="160">
+  <object id="12" name="prop-3-a" type="prop-droneWreck" x="305" y="430" width="90" height="160">
    <properties>
     <property name="scale" value="0.9"/>
    </properties>
   </object>
-  <object id="12" name="prop-3-b" type="prop-barrier" x="834" y="390" width="110" height="210">
+  <object id="13" name="prop-3-b" type="prop-crane" x="834" y="390" width="110" height="210">
    <properties>
     <property name="scale" value="1.05"/>
    </properties>
   </object>
  </objectgroup>
  <objectgroup id="7" name="PropsFront">
-  <object id="13" name="prop-3-c" type="prop-antenna" x="1454" y="440" width="100" height="170">
+  <object id="14" name="prop-3-c" type="prop-barrier" x="1454" y="440" width="100" height="170">
    <properties>
     <property name="scale" value="0.82"/>
    </properties>

@@ -5,7 +5,7 @@ export type ScenarioEnemyId =
   "rifleman" | "marksman" | "heavy" | "drone" | "turret" | "commander";
 
 export interface ScenarioCatalogEntry {
-  schemaVersion: 2;
+  schemaVersion: 3;
   id: string;
   title: string;
   description: string;
@@ -72,7 +72,7 @@ const definitions = [
       "Rain-soaked market alleys and fortified rooftops under hostile patrol control.",
     previewTone: "#879A8A",
     sectorNames: ["MARKET APPROACH", "ROOFTOP RELAY", "SERVICE ALLEY"],
-    seed: "neo_hive_loop_v2",
+    seed: "neo_hive_loop_v3",
     mapTags: ["RAIN", "URBAN", "ELECTRIFIED"],
     visualProfile: {
       skyTop: "#111820",
@@ -97,7 +97,7 @@ const definitions = [
       "Abandoned stations, maintenance tunnels, and active high-voltage rail lanes.",
     previewTone: "#A5A99B",
     sectorNames: ["RING PLATFORM", "SERVICE SHAFT", "TRANSIT LANE"],
-    seed: "metro_gridline_v2",
+    seed: "metro_gridline_v3",
     mapTags: ["SUBTERRANEAN", "RAIL HAZARD", "FAST ROUTE"],
     visualProfile: {
       skyTop: "#101417",
@@ -127,7 +127,7 @@ const definitions = [
       "A fortified foundry of crane decks, furnace lanes, and armored checkpoints.",
     previewTone: "#C08454",
     sectorNames: ["STEAM RISER", "RAIL FOUNDRY", "CRANE DECK"],
-    seed: "carbon_works_v2",
+    seed: "carbon_works_v3",
     mapTags: ["FOUNDRY", "THERMAL", "HEAVY UNITS"],
     visualProfile: {
       skyTop: "#181614",
@@ -157,7 +157,7 @@ const definitions = [
       "Exposed rooftops and construction skybridges watched by precision units.",
     previewTone: "#8596A8",
     sectorNames: ["SKYLINE APPROACH", "POLAR SPAN", "TOWER BRIDGE"],
-    seed: "aurora_downtown_v2",
+    seed: "aurora_downtown_v3",
     mapTags: ["ROOFTOP", "CROSSWIND", "MARKSMEN"],
     visualProfile: {
       skyTop: "#18202A",
@@ -187,7 +187,7 @@ const definitions = [
       "An experimental defense laboratory with blackout sectors and automated security.",
     previewTone: "#77908E",
     sectorNames: ["LAB ENTRY", "SECURITY SPINE", "CORE ACCESS"],
-    seed: "quantum_corridor_v2",
+    seed: "quantum_corridor_v3",
     mapTags: ["LAB", "BLACKOUT", "AUTOMATED DEFENSE"],
     visualProfile: {
       skyTop: "#0E1517",
@@ -214,7 +214,7 @@ const definitions = [
 ] as const;
 
 const emptyManifest: ScenarioPackManifestEntry = {
-  version: "2.0.0",
+  version: "3.0.0",
   packSha256: "",
   packSizeBytes: 0,
   previewSha256: "",
@@ -230,7 +230,7 @@ export function buildScenarioCatalog(
     const files = manifest[definition.id] ?? emptyManifest;
     const versionPath = `${definition.id}/${files.version}`;
     return {
-      schemaVersion: 2,
+      schemaVersion: 3,
       id: definition.id,
       title: definition.title,
       description: definition.description,
@@ -259,7 +259,7 @@ export function buildScenarioCatalog(
         url: `${base}/${versionPath}/scenario.zip`,
         sha256: files.packSha256,
         sizeBytes: files.packSizeBytes,
-        minClientVersion: "0.1.0",
+        minClientVersion: "0.2.0",
       },
       cacheVersion: files.version,
     };

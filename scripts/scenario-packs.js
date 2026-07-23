@@ -16,12 +16,151 @@ const manifestPath = path.join(
   "missions",
   "scenario-pack-manifest.json",
 );
-const maxPackBytes = 25 * 1024 * 1024;
-const maxExpandedBytes = 80 * 1024 * 1024;
+const maxPackBytes = 18 * 1024 * 1024;
+const maxExpandedBytes = 200 * 1024 * 1024;
 const upload = process.argv.includes("--upload");
+const scenarioModes = [
+  "practice",
+  "survival",
+  "missions",
+  "dailyChallenge",
+];
 
 function sha256(buffer) {
   return createHash("sha256").update(buffer).digest("hex");
+}
+
+function validateScenarioWorld(scenarioId, scenario, files) {
+  const world = scenario.world;
+  if (!world || !Array.isArray(world.chunks) || world.chunks.length < 5) {
+    throw new Error(`${scenarioId} must publish at least five authored chunks.`);
+  }
+  const chunkIds = new Set();
+  for (const chunk of world.chunks) {
+    if (
+      !chunk ||
+      typeof chunk.id !== "string" ||
+      typeof chunk.map !== "string" ||
+      chunkIds.has(chunk.id)
+    ) {
+      throw new Error(`${scenarioId} contains an invalid or duplicate chunk.`);
+    }
+    chunkIds.add(chunk.id);
+    const source = files[chunk.map];
+    if (!source) {
+      throw new Error(`${scenarioId} is missing authored map ${chunk.map}.`);
+    }
+    const tmx = Buffer.from(source).toString("utf8");
+    for (const layer of [
+      'name="TerrainVisual"',
+      'name="Collision"',
+      'name="Gameplay"',
+      'name="Navigation"',
+      'name="PropsBack"',
+      'name="PropsFront"',
+    ]) {
+      if (!tmx.includes(layer)) {
+        throw new Error(`${chunk.map} is missing required layer ${layer}.`);
+      }
+    }
+    if (!tmx.includes('type="terrain"')) {
+      throw new Error(`${chunk.map} has no playable terrain.`);
+    }
+  }
+  if (!world.routes || typeof world.routes !== "object") {
+    throw new Error(`${scenarioId} is missing scenario routes.`);
+  }
+  for (const mode of scenarioModes) {
+    const route = world.routes[mode];
+    if (!route || !chunkIds.has(route.intro)) {
+      throw new Error(`${scenarioId} has an invalid ${mode} intro route.`);
+    }
+    for (const id of [
+      ...(route.combatPool || []),
+      ...(route.missionSequence || []),
+      route.boss,
+      route.extraction,
+    ].filter(Boolean)) {
+      if (!chunkIds.has(id)) {
+        throw new Error(
+          `${scenarioId} route ${mode} references unknown chunk ${id}.`,
+        );
+      }
+    }
+  }
+
+  const world3d = scenario.world3d;
+  if (
+    !world3d ||
+    world3d.enabled !== true ||
+    !Array.isArray(world3d.materials) ||
+    world3d.materials.length < 4 ||
+    !Array.isArray(world3d.chunks) ||
+    world3d.chunks.length < 5
+  ) {
+    throw new Error(`${scenarioId} is missing its authored 3D world.`);
+  }
+  const chunk3dIds = new Set();
+  const geometrySignatures = new Set();
+  for (const chunk of world3d.chunks) {
+    if (
+      !chunk ||
+      typeof chunk.id !== "string" ||
+      chunk3dIds.has(chunk.id) ||
+      !Array.isArray(chunk.objects) ||
+      chunk.objects.length < 8
+    ) {
+      throw new Error(`${scenarioId} contains an invalid 3D chunk.`);
+    }
+    chunk3dIds.add(chunk.id);
+    if (!chunk.objects.some((item) => item.kind === "floor")) {
+      throw new Error(`${scenarioId}/${chunk.id} has no 3D floor.`);
+    }
+    if (
+      !chunk.objects.some((item) =>
+        ["enemy-spawn", "boss-spawn", "objective", "extraction"].includes(
+          item.kind,
+        ),
+      )
+    ) {
+      throw new Error(`${scenarioId}/${chunk.id} has no gameplay objects.`);
+    }
+    for (const item of chunk.objects) {
+      const position = item.position;
+      const size = item.size;
+      if (
+        !item.id ||
+        !item.kind ||
+        !position ||
+        ![position.x, position.y, position.z].every(Number.isFinite) ||
+        (size && ![size.x, size.y, size.z].every(Number.isFinite))
+      ) {
+        throw new Error(`${scenarioId}/${chunk.id} has invalid 3D geometry.`);
+      }
+    }
+    geometrySignatures.add(
+      chunk.objects
+        .filter((item) => ["floor", "wall", "cover", "hazard"].includes(item.kind))
+        .map(
+          (item) =>
+            `${item.kind}:${item.position.x}:${item.position.z}:${item.size?.x}:${item.size?.z}`,
+        )
+        .join("|"),
+    );
+  }
+  if (geometrySignatures.size !== world3d.chunks.length) {
+    throw new Error(`${scenarioId} repeats the same 3D map geometry.`);
+  }
+  for (const mode of scenarioModes) {
+    const route = world3d.routes?.[mode];
+    if (
+      !Array.isArray(route) ||
+      route.length === 0 ||
+      route.some((id) => !chunk3dIds.has(id))
+    ) {
+      throw new Error(`${scenarioId} has an invalid 3D ${mode} route.`);
+    }
+  }
 }
 
 async function collectFiles(root, current = root) {
@@ -129,9 +268,9 @@ async function main() {
     const scenarioJsonPath = path.join(scenarioRoot, "scenario.json");
     const previewPath = path.join(scenarioRoot, "preview.webp");
     const scenario = JSON.parse(await fs.readFile(scenarioJsonPath, "utf8"));
-    if (scenario.id !== scenarioId || scenario.schemaVersion !== 2) {
+    if (scenario.id !== scenarioId || scenario.schemaVersion !== 3) {
       throw new Error(
-        `${scenarioId}/scenario.json must use matching id and schemaVersion 2.`,
+        `${scenarioId}/scenario.json must use matching id and schemaVersion 3.`,
       );
     }
     const version = String(scenario.version || "").trim();
@@ -145,17 +284,23 @@ async function main() {
     if (!files["scenario.json"]) {
       throw new Error(`${scenarioId} is missing scenario.json.`);
     }
+    validateScenarioWorld(scenarioId, scenario, files);
     const expandedBytes = Object.values(files).reduce(
       (total, bytes) => total + bytes.byteLength,
       0,
     );
     if (expandedBytes > maxExpandedBytes) {
-      throw new Error(`${scenarioId} exceeds the 80 MB expanded-size limit.`);
+      throw new Error(`${scenarioId} exceeds the 200 MB expanded-size limit.`);
     }
 
-    const zip = Buffer.from(zipSync(files, { level: 9 }));
+    const zip = Buffer.from(
+      zipSync(files, {
+        level: 9,
+        mtime: new Date("2026-01-01T00:00:00.000Z"),
+      }),
+    );
     if (zip.byteLength > maxPackBytes) {
-      throw new Error(`${scenarioId} exceeds the 25 MB compressed-size limit.`);
+      throw new Error(`${scenarioId} exceeds the 18 MB compressed-size limit.`);
     }
     const preview = await fs.readFile(previewPath);
     const scenarioOutput = path.join(outputRoot, scenarioId, version);

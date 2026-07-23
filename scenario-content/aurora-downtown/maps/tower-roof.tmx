@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="12" tilewidth="64" tileheight="64" infinite="0" nextlayerid="8" nextobjectid="14">
  <properties>
-  <property name="chunkId" value="steam-riser"/>
+  <property name="chunkId" value="tower-roof"/>
   <property name="role" value="combat"/>
  </properties>
  <imagelayer id="1" name="ParallaxFar" visible="0">
@@ -11,33 +11,33 @@
 
  </objectgroup>
  <objectgroup id="3" name="Collision">
-  <object id="1" name="ground-west" type="terrain" x="0" y="630" width="790" height="138">
+  <object id="1" name="ground-entry" type="terrain" x="0" y="640" width="620" height="128">
   </object>
-  <object id="2" name="ground-east" type="terrain" x="960" y="560" width="960" height="208">
+  <object id="2" name="middle-step" type="terrain" x="620" y="560" width="610" height="208">
   </object>
-  <object id="3" name="high-cover" type="cover" x="1120" y="420" width="340" height="140">
+  <object id="3" name="high-step" type="terrain" x="1230" y="485" width="690" height="283">
+  </object>
+  <object id="4" name="step-cover" type="cover" x="910" y="430" width="190" height="130">
   </object>
  </objectgroup>
  <objectgroup id="4" name="Gameplay">
-  <object id="4" name="objective-2" type="objective" x="1620" y="520" width="1" height="1">
+  <object id="5" name="objective-4" type="objective" x="1620" y="500" width="1" height="1">
    <point/>
   </object>
-  <object id="5" name="enemy-1-a" type="enemy-spawn" x="900" y="550" width="1" height="1">
-   <point/>
-   <properties>
-    <property name="enemy" value="rifleman"/>
-   </properties>
-  </object>
-  <object id="6" name="enemy-1-b" type="enemy-spawn" x="1330" y="480" width="1" height="1">
+  <object id="6" name="enemy-3-a" type="enemy-spawn" x="900" y="550" width="1" height="1">
    <point/>
    <properties>
-    <property name="enemy" value="turret"/>
+    <property name="enemy" value="marksman"/>
    </properties>
   </object>
-  <object id="7" name="pickup-ammo" type="pickup-ammo" x="1080" y="520" width="1" height="1">
+  <object id="7" name="enemy-3-b" type="enemy-spawn" x="1330" y="520" width="1" height="1">
    <point/>
+   <properties>
+    <property name="enemy" value="drone"/>
+   </properties>
   </object>
-  <object id="8" name="steam-hazard" type="steam" x="990" y="570" width="180" height="56">
+  <object id="8" name="pickup-ammo" type="pickup-ammo" x="1080" y="520" width="1" height="1">
+   <point/>
   </object>
  </objectgroup>
  <objectgroup id="5" name="Navigation">
@@ -49,19 +49,19 @@
   </object>
  </objectgroup>
  <objectgroup id="6" name="PropsBack">
-  <object id="11" name="prop-1-a" type="prop-barrier" x="215" y="430" width="90" height="160">
+  <object id="11" name="prop-3-a" type="prop-droneWreck" x="305" y="430" width="90" height="160">
    <properties>
     <property name="scale" value="0.9"/>
    </properties>
   </object>
-  <object id="12" name="prop-1-b" type="prop-bunker" x="758" y="390" width="110" height="210">
+  <object id="12" name="prop-3-b" type="prop-rooftopVent" x="834" y="390" width="110" height="210">
    <properties>
     <property name="scale" value="1.05"/>
    </properties>
   </object>
  </objectgroup>
  <objectgroup id="7" name="PropsFront">
-  <object id="13" name="prop-1-c" type="prop-droneWreck" x="1538" y="440" width="100" height="170">
+  <object id="13" name="prop-3-c" type="prop-antenna" x="1454" y="440" width="100" height="170">
    <properties>
     <property name="scale" value="0.82"/>
    </properties>

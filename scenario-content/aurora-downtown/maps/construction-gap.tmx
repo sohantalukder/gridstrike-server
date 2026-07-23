@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="12" tilewidth="64" tileheight="64" infinite="0" nextlayerid="8" nextobjectid="14">
  <properties>
-  <property name="chunkId" value="steam-riser"/>
+  <property name="chunkId" value="construction-gap"/>
   <property name="role" value="combat"/>
  </properties>
  <imagelayer id="1" name="ParallaxFar" visible="0">
@@ -25,19 +25,19 @@
   <object id="5" name="enemy-1-a" type="enemy-spawn" x="900" y="550" width="1" height="1">
    <point/>
    <properties>
-    <property name="enemy" value="rifleman"/>
+    <property name="enemy" value="drone"/>
    </properties>
   </object>
   <object id="6" name="enemy-1-b" type="enemy-spawn" x="1330" y="480" width="1" height="1">
    <point/>
    <properties>
-    <property name="enemy" value="turret"/>
+    <property name="enemy" value="commander"/>
    </properties>
   </object>
   <object id="7" name="pickup-ammo" type="pickup-ammo" x="1080" y="520" width="1" height="1">
    <point/>
   </object>
-  <object id="8" name="steam-hazard" type="steam" x="990" y="570" width="180" height="56">
+  <object id="8" name="wind-hazard" type="wind" x="760" y="260" width="280" height="390">
   </object>
  </objectgroup>
  <objectgroup id="5" name="Navigation">
@@ -49,12 +49,12 @@
   </object>
  </objectgroup>
  <objectgroup id="6" name="PropsBack">
-  <object id="11" name="prop-1-a" type="prop-barrier" x="215" y="430" width="90" height="160">
+  <object id="11" name="prop-1-a" type="prop-antenna" x="215" y="430" width="90" height="160">
    <properties>
     <property name="scale" value="0.9"/>
    </properties>
   </object>
-  <object id="12" name="prop-1-b" type="prop-bunker" x="758" y="390" width="110" height="210">
+  <object id="12" name="prop-1-b" type="prop-barrier" x="758" y="390" width="110" height="210">
    <properties>
     <property name="scale" value="1.05"/>
    </properties>

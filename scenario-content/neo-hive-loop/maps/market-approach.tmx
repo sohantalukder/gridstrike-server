@@ -1,12 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="12" tilewidth="64" tileheight="64" infinite="0" nextlayerid="4" nextobjectid="5">
- <imagelayer id="3" name="Backdrop" repeatx="1"><image source="backgrounds/environment.webp" width="1600" height="900"/></imagelayer>
- <objectgroup id="1" name="Collision">
-  <object id="1" name="street" type="terrain" x="0" y="640" width="1920" height="128"/>
-  <object id="2" name="market-cover" type="cover" x="620" y="512" width="250" height="128"/>
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="12" tilewidth="64" tileheight="64" infinite="0" nextlayerid="8" nextobjectid="13">
+ <properties>
+  <property name="chunkId" value="market-approach"/>
+  <property name="role" value="intro"/>
+ </properties>
+ <imagelayer id="1" name="ParallaxFar" visible="0">
+  <image source="../backgrounds/environment.webp" width="1600" height="900"/>
+ </imagelayer>
+ <objectgroup id="2" name="TerrainVisual">
+
  </objectgroup>
- <objectgroup id="2" name="Gameplay">
-  <object id="3" name="relay-a" type="objective" x="1010" y="576"><point/></object>
-  <object id="4" name="electric-puddle" type="electric" x="1280" y="620" width="230" height="20"/>
+ <objectgroup id="3" name="Collision">
+  <object id="1" name="ground-main" type="terrain" x="0" y="620" width="1920" height="148">
+  </object>
+  <object id="2" name="cover-main" type="cover" x="620" y="490" width="280" height="130">
+  </object>
+ </objectgroup>
+ <objectgroup id="4" name="Gameplay">
+  <object id="3" name="objective-1" type="objective" x="1500" y="530" width="1" height="1">
+   <point/>
+  </object>
+  <object id="4" name="enemy-0-a" type="enemy-spawn" x="900" y="550" width="1" height="1">
+   <point/>
+   <properties>
+    <property name="enemy" value="rifleman"/>
+   </properties>
+  </object>
+  <object id="5" name="enemy-0-b" type="enemy-spawn" x="1330" y="520" width="1" height="1">
+   <point/>
+   <properties>
+    <property name="enemy" value="drone"/>
+   </properties>
+  </object>
+  <object id="6" name="pickup-ammo" type="pickup-ammo" x="1080" y="520" width="1" height="1">
+   <point/>
+  </object>
+  <object id="7" name="electric-hazard" type="electric" x="1030" y="615" width="250" height="24">
+  </object>
+ </objectgroup>
+ <objectgroup id="5" name="Navigation">
+  <object id="8" name="nav-start" type="nav-start" x="80" y="540" width="1" height="1">
+   <point/>
+  </object>
+  <object id="9" name="nav-end" type="nav-end" x="1840" y="500" width="1" height="1">
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup id="6" name="PropsBack">
+  <object id="10" name="prop-0-a" type="prop-barrier" x="170" y="430" width="90" height="160">
+   <properties>
+    <property name="scale" value="0.9"/>
+   </properties>
+  </object>
+  <object id="11" name="prop-0-b" type="prop-antenna" x="720" y="390" width="110" height="210">
+   <properties>
+    <property name="scale" value="1.05"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="7" name="PropsFront">
+  <object id="12" name="prop-0-c" type="prop-bunker" x="1580" y="440" width="100" height="170">
+   <properties>
+    <property name="scale" value="0.82"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

@@ -1,13 +1,16 @@
 {
-  "schemaVersion": 2,
-  "version": "2.0.0",
+  "schemaVersion": 3,
+  "version": "3.0.0",
   "id": "quantum-corridor",
   "environment": {
     "biome": "laboratory",
     "weather": "indoor",
     "timeOfDay": "indoor",
     "terrainStyle": "defense-lab",
-    "hazardTypes": ["laser", "shutter"]
+    "hazardTypes": [
+      "laser",
+      "shutter"
+    ]
   },
   "world": {
     "sectorWidth": 930,
@@ -16,10 +19,150 @@
     "verticality": 0.84,
     "gapChance": 0.02,
     "hazardFrequency": 0.48,
-    "chunkMaps": ["maps/lab-entry.tmx", "maps/core-access.tmx"]
+    "chunkMaps": [
+      "maps/lab-entry.tmx",
+      "maps/blackout-corridor.tmx",
+      "maps/trip-laser-gallery.tmx",
+      "maps/core-access.tmx",
+      "maps/extraction-gate.tmx"
+    ],
+    "chunks": [
+      {
+        "id": "lab-entry",
+        "map": "maps/lab-entry.tmx",
+        "role": "intro",
+        "weight": 1,
+        "allowedModes": [
+          "practice",
+          "survival",
+          "missions",
+          "dailyChallenge"
+        ],
+        "order": 0
+      },
+      {
+        "id": "blackout-corridor",
+        "map": "maps/blackout-corridor.tmx",
+        "role": "combat",
+        "weight": 1.2,
+        "allowedModes": [
+          "practice",
+          "survival",
+          "missions",
+          "dailyChallenge"
+        ],
+        "order": 1
+      },
+      {
+        "id": "trip-laser-gallery",
+        "map": "maps/trip-laser-gallery.tmx",
+        "role": "objective",
+        "weight": 1,
+        "allowedModes": [
+          "practice",
+          "survival",
+          "missions",
+          "dailyChallenge"
+        ],
+        "order": 2
+      },
+      {
+        "id": "core-access",
+        "map": "maps/core-access.tmx",
+        "role": "combat",
+        "weight": 1.2,
+        "allowedModes": [
+          "practice",
+          "survival",
+          "missions",
+          "dailyChallenge"
+        ],
+        "order": 3
+      },
+      {
+        "id": "extraction-gate",
+        "map": "maps/extraction-gate.tmx",
+        "role": "extraction",
+        "weight": 1,
+        "allowedModes": [
+          "practice",
+          "survival",
+          "missions",
+          "dailyChallenge"
+        ],
+        "order": 4
+      }
+    ],
+    "routes": {
+      "practice": {
+        "intro": "lab-entry",
+        "combatPool": [
+          "blackout-corridor",
+          "trip-laser-gallery",
+          "core-access"
+        ],
+        "missionSequence": [],
+        "boss": "extraction-gate",
+        "extraction": "extraction-gate",
+        "loop": true
+      },
+      "survival": {
+        "intro": "lab-entry",
+        "combatPool": [
+          "blackout-corridor",
+          "trip-laser-gallery",
+          "core-access"
+        ],
+        "missionSequence": [],
+        "boss": "extraction-gate",
+        "extraction": "extraction-gate",
+        "loop": true
+      },
+      "missions": {
+        "intro": "lab-entry",
+        "combatPool": [
+          "blackout-corridor",
+          "trip-laser-gallery",
+          "core-access"
+        ],
+        "missionSequence": [
+          "lab-entry",
+          "blackout-corridor",
+          "trip-laser-gallery",
+          "core-access",
+          "extraction-gate"
+        ],
+        "boss": "extraction-gate",
+        "extraction": "extraction-gate",
+        "loop": false
+      },
+      "dailyChallenge": {
+        "intro": "lab-entry",
+        "combatPool": [
+          "blackout-corridor",
+          "trip-laser-gallery",
+          "core-access"
+        ],
+        "missionSequence": [],
+        "boss": "extraction-gate",
+        "extraction": "extraction-gate",
+        "loop": true
+      }
+    },
+    "parallax": [
+      {
+        "path": "backgrounds/environment.webp",
+        "scrollFactor": 0.08,
+        "opacity": 1
+      }
+    ]
   },
   "combat": {
-    "enemyWeights": {"drone": 0.45, "turret": 0.35, "commander": 0.2},
+    "enemyWeights": {
+      "drone": 0.45,
+      "turret": 0.35,
+      "commander": 0.2
+    },
     "enemyDensity": 1.2,
     "bossEvery": 6,
     "healthMultiplier": 1.08,
@@ -34,15 +177,1329 @@
   },
   "modifiers": {
     "moveSpeed": 0.96,
-    "jump": 1.0,
-    "gravity": 1.0,
-    "weaponDamage": 1.0,
-    "projectileSpeed": 1.0,
-    "weaponSpread": 1.0,
-    "reloadDuration": 1.0,
+    "jump": 1,
+    "gravity": 1,
+    "weaponDamage": 1,
+    "projectileSpeed": 1,
+    "weaponSpread": 1,
+    "reloadDuration": 1,
     "reserveAmmo": 0.85,
     "abilityCooldown": 0.85,
     "shieldDuration": 1.15,
     "visibility": 0.7
+  },
+  "world3d": {
+    "enabled": true,
+    "renderer": "flame3d",
+    "laneWidth": 15,
+    "cameraFov": 58,
+    "cameraDistance": 9.5,
+    "fogDensity": 0.04,
+    "skyColor": "#030814",
+    "materials": [
+      {
+        "id": "concrete",
+        "color": "#202B3B",
+        "metallic": 0.22,
+        "roughness": 0.62
+      },
+      {
+        "id": "structure",
+        "color": "#0E1727",
+        "metallic": 0.76,
+        "roughness": 0.22
+      },
+      {
+        "id": "cover",
+        "color": "#2E4059",
+        "metallic": 0.64,
+        "roughness": 0.28
+      },
+      {
+        "id": "accent",
+        "color": "#25F4D4",
+        "metallic": 0.34,
+        "roughness": 0.16
+      },
+      {
+        "id": "hazard",
+        "color": "#FF2E88",
+        "metallic": 0.2,
+        "roughness": 0.14
+      }
+    ],
+    "chunks": [
+      {
+        "id": "lab-entry",
+        "role": "intro",
+        "length": 40,
+        "weight": 1,
+        "allowedModes": [
+          "practice",
+          "survival",
+          "missions",
+          "dailyChallenge"
+        ],
+        "objects": [
+          {
+            "id": "floor-0",
+            "kind": "floor",
+            "primitive": "box",
+            "position": {
+              "x": 0,
+              "y": -0.3,
+              "z": 0
+            },
+            "size": {
+              "x": 15,
+              "y": 0.6,
+              "z": 40
+            },
+            "materialId": "concrete"
+          },
+          {
+            "id": "left-structure-0",
+            "kind": "wall",
+            "primitive": "box",
+            "position": {
+              "x": -7.9,
+              "y": 2.4,
+              "z": 5
+            },
+            "size": {
+              "x": 0.8,
+              "y": 4.8,
+              "z": 28.799999999999997
+            },
+            "materialId": "structure"
+          },
+          {
+            "id": "right-structure-0",
+            "kind": "wall",
+            "primitive": "box",
+            "position": {
+              "x": 7.9,
+              "y": 2.1,
+              "z": -4
+            },
+            "size": {
+              "x": 0.8,
+              "y": 4.2,
+              "z": 27.200000000000003
+            },
+            "materialId": "structure"
+          },
+          {
+            "id": "cover-0-a",
+            "kind": "cover",
+            "primitive": "box",
+            "position": {
+              "x": -4,
+              "y": 0.72,
+              "z": -7
+            },
+            "size": {
+              "x": 3.2,
+              "y": 1.44,
+              "z": 1.1
+            },
+            "materialId": "cover"
+          },
+          {
+            "id": "cover-0-b",
+            "kind": "cover",
+            "primitive": "box",
+            "position": {
+              "x": 3.8,
+              "y": 0.86,
+              "z": 5
+            },
+            "size": {
+              "x": 2.6,
+              "y": 1.72,
+              "z": 1.2
+            },
+            "materialId": "cover"
+          },
+          {
+            "id": "tower-0",
+            "kind": "prop",
+            "primitive": "cylinder",
+            "position": {
+              "x": 6.2,
+              "y": 2.8,
+              "z": -12
+            },
+            "size": {
+              "x": 1.6,
+              "y": 5.6,
+              "z": 1.6
+            },
+            "materialId": "structure"
+          },
+          {
+            "id": "signal-0",
+            "kind": "prop",
+            "primitive": "cylinder",
+            "position": {
+              "x": -6.5,
+              "y": 1.3,
+              "z": 12
+            },
+            "size": {
+              "x": 1.1,
+              "y": 2.6,
+              "z": 1.1
+            },
+            "materialId": "accent"
+          },
+          {
+            "id": "light-0-a",
+            "kind": "light",
+            "primitive": "box",
+            "position": {
+              "x": -5,
+              "y": 4.8,
+              "z": -7
+            },
+            "size": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "materialId": "structure",
+            "metadata": {
+              "color": "#25F4D4",
+              "intensity": 11
+            }
+          },
+          {
+            "id": "light-0-b",
+            "kind": "light",
+            "primitive": "box",
+            "position": {
+              "x": 5,
+              "y": 4.2,
+              "z": 9
+            },
+            "size": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "materialId": "structure",
+            "metadata": {
+              "color": "#25F4D4",
+              "intensity": 9
+            }
+          },
+          {
+            "id": "enemy-0-a",
+            "kind": "enemy-spawn",
+            "primitive": "box",
+            "position": {
+              "x": -2.8,
+              "y": 0,
+              "z": 6
+            },
+            "size": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "materialId": "structure",
+            "archetype": "drone"
+          },
+          {
+            "id": "enemy-0-b",
+            "kind": "enemy-spawn",
+            "primitive": "box",
+            "position": {
+              "x": 3.2,
+              "y": 0,
+              "z": 13
+            },
+            "size": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "materialId": "structure",
+            "archetype": "turret"
+          },
+          {
+            "id": "objective-0",
+            "kind": "objective",
+            "primitive": "cylinder",
+            "position": {
+              "x": 0,
+              "y": 1.4,
+              "z": 15
+            },
+            "size": {
+              "x": 1.4,
+              "y": 2.8,
+              "z": 1.4
+            },
+            "materialId": "accent"
+          }
+        ]
+      },
+      {
+        "id": "blackout-corridor",
+        "role": "combat",
+        "length": 44,
+        "weight": 1.2,
+        "allowedModes": [
+          "practice",
+          "survival",
+          "missions",
+          "dailyChallenge"
+        ],
+        "objects": [
+          {
+            "id": "floor-1",
+            "kind": "floor",
+            "primitive": "box",
+            "position": {
+              "x": 0,
+              "y": -0.3,
+              "z": 0
+            },
+            "size": {
+              "x": 15,
+              "y": 0.6,
+              "z": 44
+            },
+            "materialId": "concrete"
+          },
+          {
+            "id": "left-structure-1",
+            "kind": "wall",
+            "primitive": "box",
+            "position": {
+              "x": -7.9,
+              "y": 2.4,
+              "z": -5
+            },
+            "size": {
+              "x": 0.8,
+              "y": 5.8,
+              "z": 31.68
+            },
+            "materialId": "structure"
+          },
+          {
+            "id": "right-structure-1",
+            "kind": "wall",
+            "primitive": "box",
+            "position": {
+              "x": 7.9,
+              "y": 2.1,
+              "z": 6
+            },
+            "size": {
+              "x": 0.8,
+              "y": 4.9,
+              "z": 29.92
+            },
+            "materialId": "structure"
+          },
+          {
+            "id": "cover-1-a",
+            "kind": "cover",
+            "primitive": "box",
+            "position": {
+              "x": -3.45,
+              "y": 0.72,
+              "z": -5
+            },
+            "size": {
+              "x": 3.2,
+              "y": 1.44,
+              "z": 1.2200000000000002
+            },
+            "materialId": "cover",
+            "rotationY": 0.16
+          },
+          {
+            "id": "cover-1-b",
+            "kind": "cover",
+            "primitive": "box",
+            "position": {
+              "x": 3.4,
+              "y": 0.86,
+              "z": 6.4
+            },
+            "size": {
+              "x": 2.8000000000000003,
+              "y": 1.72,
+              "z": 1.2
+            },
+            "materialId": "cover",
+            "rotationY": -0.12
+          },
+          {
+            "id": "tower-1",
+            "kind": "prop",
+            "primitive": "box",
+            "position": {
+              "x": -6,
+              "y": 2.8,
+              "z": -11
+            },
+            "size": {
+              "x": 1.75,
+              "y": 6.6,
+              "z": 1.6
+            },
+            "materialId": "structure"
+          },
+          {
+            "id": "signal-1",
+            "kind": "prop",
+            "primitive": "cylinder",
+            "position": {
+              "x": 6.3,
+              "y": 1.3,
+              "z": 11
+            },
+            "size": {
+              "x": 1.1,
+              "y": 2.6,
+              "z": 1.1
+            },
+            "materialId": "accent"
+          },
+          {
+            "id": "light-1-a",
+            "kind": "light",
+            "primitive": "box",
+            "position": {
+              "x": -5,
+              "y": 4.8,
+              "z": -7
+            },
+            "size": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "materialId": "structure",
+            "metadata": {
+              "color": "#25F4D4",
+              "intensity": 12
+            }
+          },
+          {
+            "id": "light-1-b",
+            "kind": "light",
+            "primitive": "box",
+            "position": {
+              "x": 5,
+              "y": 4.2,
+              "z": 9
+            },
+            "size": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "materialId": "structure",
+            "metadata": {
+              "color": "#FF6A2A",
+              "intensity": 10
+            }
+          },
+          {
+            "id": "enemy-1-a",
+            "kind": "enemy-spawn",
+            "primitive": "box",
+            "position": {
+              "x": -2.4,
+              "y": 0,
+              "z": 7
+            },
+            "size": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "materialId": "structure",
+            "archetype": "turret"
+          },
+          {
+            "id": "enemy-1-b",
+            "kind": "enemy-spawn",
+            "primitive": "box",
+            "position": {
+              "x": 2.9000000000000004,
+              "y": 0,
+              "z": 13.5
+            },
+            "size": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "materialId": "structure",
+            "archetype": "commander"
+          },
+          {
+            "id": "shutter-1",
+            "kind": "hazard",
+            "primitive": "box",
+            "position": {
+              "x": -1.5,
+              "y": 0.12,
+              "z": 1.8
+            },
+            "size": {
+              "x": 5.4,
+              "y": 0.24,
+              "z": 3
+            },
+            "materialId": "hazard",
+            "damage": 12
+          },
+          {
+            "id": "objective-1",
+            "kind": "objective",
+            "primitive": "cylinder",
+            "position": {
+              "x": 4.6,
+              "y": 1.4,
+              "z": 15
+            },
+            "size": {
+              "x": 1.4,
+              "y": 2.8,
+              "z": 1.4
+            },
+            "materialId": "accent"
+          }
+        ]
+      },
+      {
+        "id": "trip-laser-gallery",
+        "role": "objective",
+        "length": 40,
+        "weight": 1,
+        "allowedModes": [
+          "practice",
+          "survival",
+          "missions",
+          "dailyChallenge"
+        ],
+        "objects": [
+          {
+            "id": "floor-2",
+            "kind": "floor",
+            "primitive": "box",
+            "position": {
+              "x": 0,
+              "y": -0.3,
+              "z": 0
+            },
+            "size": {
+              "x": 15,
+              "y": 0.6,
+              "z": 40
+            },
+            "materialId": "concrete"
+          },
+          {
+            "id": "left-structure-2",
+            "kind": "wall",
+            "primitive": "box",
+            "position": {
+              "x": -7.9,
+              "y": 2.4,
+              "z": 5
+            },
+            "size": {
+              "x": 0.8,
+              "y": 6.8,
+              "z": 28.799999999999997
+            },
+            "materialId": "structure"
+          },
+          {
+            "id": "right-structure-2",
+            "kind": "wall",
+            "primitive": "box",
+            "position": {
+              "x": 7.9,
+              "y": 2.1,
+              "z": -4
+            },
+            "size": {
+              "x": 0.8,
+              "y": 5.6,
+              "z": 27.200000000000003
+            },
+            "materialId": "structure"
+          },
+          {
+            "id": "cover-2-a",
+            "kind": "cover",
+            "primitive": "box",
+            "position": {
+              "x": -2.9,
+              "y": 0.72,
+              "z": -3
+            },
+            "size": {
+              "x": 3.2,
+              "y": 1.44,
+              "z": 1.34
+            },
+            "materialId": "cover",
+            "rotationY": 0.32
+          },
+          {
+            "id": "cover-2-b",
+            "kind": "cover",
+            "primitive": "box",
+            "position": {
+              "x": 3,
+              "y": 0.86,
+              "z": 7.8
+            },
+            "size": {
+              "x": 3,
+              "y": 1.72,
+              "z": 1.2
+            },
+            "materialId": "cover",
+            "rotationY": -0.24
+          },
+          {
+            "id": "tower-2",
+            "kind": "prop",
+            "primitive": "cylinder",
+            "position": {
+              "x": 6.2,
+              "y": 2.8,
+              "z": -10
+            },
+            "size": {
+              "x": 1.9000000000000001,
+              "y": 7.6,
+              "z": 1.6
+            },
+            "materialId": "structure"
+          },
+          {
+            "id": "signal-2",
+            "kind": "prop",
+            "primitive": "cylinder",
+            "position": {
+              "x": -6.5,
+              "y": 1.3,
+              "z": 10
+            },
+            "size": {
+              "x": 1.1,
+              "y": 2.6,
+              "z": 1.1
+            },
+            "materialId": "accent"
+          },
+          {
+            "id": "light-2-a",
+            "kind": "light",
+            "primitive": "box",
+            "position": {
+              "x": -5,
+              "y": 4.8,
+              "z": -7
+            },
+            "size": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "materialId": "structure",
+            "metadata": {
+              "color": "#25F4D4",
+              "intensity": 13
+            }
+          },
+          {
+            "id": "light-2-b",
+            "kind": "light",
+            "primitive": "box",
+            "position": {
+              "x": 5,
+              "y": 4.2,
+              "z": 9
+            },
+            "size": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "materialId": "structure",
+            "metadata": {
+              "color": "#25F4D4",
+              "intensity": 11
+            }
+          },
+          {
+            "id": "enemy-2-a",
+            "kind": "enemy-spawn",
+            "primitive": "box",
+            "position": {
+              "x": -1.9999999999999998,
+              "y": 0,
+              "z": 8
+            },
+            "size": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "materialId": "structure",
+            "archetype": "commander"
+          },
+          {
+            "id": "enemy-2-b",
+            "kind": "enemy-spawn",
+            "primitive": "box",
+            "position": {
+              "x": 2.6,
+              "y": 0,
+              "z": 14
+            },
+            "size": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "materialId": "structure",
+            "archetype": "drone"
+          },
+          {
+            "id": "laser-2",
+            "kind": "hazard",
+            "primitive": "box",
+            "position": {
+              "x": 0,
+              "y": 0.12,
+              "z": 3.6
+            },
+            "size": {
+              "x": 0.22,
+              "y": 3.4,
+              "z": 3
+            },
+            "materialId": "hazard",
+            "damage": 18
+          },
+          {
+            "id": "objective-2",
+            "kind": "objective",
+            "primitive": "cylinder",
+            "position": {
+              "x": 0,
+              "y": 1.4,
+              "z": 15
+            },
+            "size": {
+              "x": 1.4,
+              "y": 2.8,
+              "z": 1.4
+            },
+            "materialId": "accent"
+          },
+          {
+            "id": "trip-laser-0",
+            "kind": "hazard",
+            "primitive": "box",
+            "position": {
+              "x": -4.2,
+              "y": 0.9,
+              "z": 3
+            },
+            "size": {
+              "x": 0.12,
+              "y": 1.8,
+              "z": 0.12
+            },
+            "materialId": "hazard",
+            "damage": 14
+          },
+          {
+            "id": "trip-laser-1",
+            "kind": "hazard",
+            "primitive": "box",
+            "position": {
+              "x": -2.1,
+              "y": 0.55,
+              "z": 3
+            },
+            "size": {
+              "x": 0.12,
+              "y": 1.8,
+              "z": 0.12
+            },
+            "materialId": "hazard",
+            "damage": 14
+          },
+          {
+            "id": "trip-laser-2",
+            "kind": "hazard",
+            "primitive": "box",
+            "position": {
+              "x": 0,
+              "y": 0.9,
+              "z": 3
+            },
+            "size": {
+              "x": 0.12,
+              "y": 1.8,
+              "z": 0.12
+            },
+            "materialId": "hazard",
+            "damage": 14
+          },
+          {
+            "id": "trip-laser-3",
+            "kind": "hazard",
+            "primitive": "box",
+            "position": {
+              "x": 2.1,
+              "y": 1.25,
+              "z": 3
+            },
+            "size": {
+              "x": 0.12,
+              "y": 1.8,
+              "z": 0.12
+            },
+            "materialId": "hazard",
+            "damage": 14
+          },
+          {
+            "id": "trip-laser-4",
+            "kind": "hazard",
+            "primitive": "box",
+            "position": {
+              "x": 4.2,
+              "y": 0.9,
+              "z": 3
+            },
+            "size": {
+              "x": 0.12,
+              "y": 1.8,
+              "z": 0.12
+            },
+            "materialId": "hazard",
+            "damage": 14
+          }
+        ]
+      },
+      {
+        "id": "core-access",
+        "role": "combat",
+        "length": 44,
+        "weight": 1.2,
+        "allowedModes": [
+          "practice",
+          "survival",
+          "missions",
+          "dailyChallenge"
+        ],
+        "objects": [
+          {
+            "id": "floor-3",
+            "kind": "floor",
+            "primitive": "box",
+            "position": {
+              "x": 0,
+              "y": -0.3,
+              "z": 0
+            },
+            "size": {
+              "x": 15,
+              "y": 0.6,
+              "z": 44
+            },
+            "materialId": "concrete"
+          },
+          {
+            "id": "left-structure-3",
+            "kind": "wall",
+            "primitive": "box",
+            "position": {
+              "x": -7.9,
+              "y": 2.4,
+              "z": -5
+            },
+            "size": {
+              "x": 0.8,
+              "y": 7.8,
+              "z": 31.68
+            },
+            "materialId": "structure"
+          },
+          {
+            "id": "right-structure-3",
+            "kind": "wall",
+            "primitive": "box",
+            "position": {
+              "x": 7.9,
+              "y": 2.1,
+              "z": 6
+            },
+            "size": {
+              "x": 0.8,
+              "y": 6.3,
+              "z": 29.92
+            },
+            "materialId": "structure"
+          },
+          {
+            "id": "cover-3-a",
+            "kind": "cover",
+            "primitive": "box",
+            "position": {
+              "x": -2.3499999999999996,
+              "y": 0.72,
+              "z": -1
+            },
+            "size": {
+              "x": 3.2,
+              "y": 1.44,
+              "z": 1.46
+            },
+            "materialId": "cover",
+            "rotationY": 0.48
+          },
+          {
+            "id": "cover-3-b",
+            "kind": "cover",
+            "primitive": "box",
+            "position": {
+              "x": 2.5999999999999996,
+              "y": 0.86,
+              "z": 9.2
+            },
+            "size": {
+              "x": 3.2,
+              "y": 1.72,
+              "z": 1.2
+            },
+            "materialId": "cover",
+            "rotationY": -0.36
+          },
+          {
+            "id": "tower-3",
+            "kind": "prop",
+            "primitive": "box",
+            "position": {
+              "x": -6,
+              "y": 2.8,
+              "z": -9
+            },
+            "size": {
+              "x": 2.05,
+              "y": 8.6,
+              "z": 1.6
+            },
+            "materialId": "structure"
+          },
+          {
+            "id": "signal-3",
+            "kind": "prop",
+            "primitive": "cylinder",
+            "position": {
+              "x": 6.3,
+              "y": 1.3,
+              "z": 9
+            },
+            "size": {
+              "x": 1.1,
+              "y": 2.6,
+              "z": 1.1
+            },
+            "materialId": "accent"
+          },
+          {
+            "id": "light-3-a",
+            "kind": "light",
+            "primitive": "box",
+            "position": {
+              "x": -5,
+              "y": 4.8,
+              "z": -7
+            },
+            "size": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "materialId": "structure",
+            "metadata": {
+              "color": "#25F4D4",
+              "intensity": 14
+            }
+          },
+          {
+            "id": "light-3-b",
+            "kind": "light",
+            "primitive": "box",
+            "position": {
+              "x": 5,
+              "y": 4.2,
+              "z": 9
+            },
+            "size": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "materialId": "structure",
+            "metadata": {
+              "color": "#FF6A2A",
+              "intensity": 12
+            }
+          },
+          {
+            "id": "enemy-3-a",
+            "kind": "enemy-spawn",
+            "primitive": "box",
+            "position": {
+              "x": -1.5999999999999996,
+              "y": 0,
+              "z": 9
+            },
+            "size": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "materialId": "structure",
+            "archetype": "drone"
+          },
+          {
+            "id": "enemy-3-b",
+            "kind": "enemy-spawn",
+            "primitive": "box",
+            "position": {
+              "x": 2.3000000000000003,
+              "y": 0,
+              "z": 14.5
+            },
+            "size": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "materialId": "structure",
+            "archetype": "turret"
+          },
+          {
+            "id": "shutter-3",
+            "kind": "hazard",
+            "primitive": "box",
+            "position": {
+              "x": -1.5,
+              "y": 0.12,
+              "z": 5.4
+            },
+            "size": {
+              "x": 5.4,
+              "y": 0.24,
+              "z": 3
+            },
+            "materialId": "hazard",
+            "damage": 12
+          },
+          {
+            "id": "objective-3",
+            "kind": "objective",
+            "primitive": "cylinder",
+            "position": {
+              "x": 4.6,
+              "y": 1.4,
+              "z": 15
+            },
+            "size": {
+              "x": 1.4,
+              "y": 2.8,
+              "z": 1.4
+            },
+            "materialId": "accent"
+          }
+        ]
+      },
+      {
+        "id": "extraction-gate",
+        "role": "extraction",
+        "length": 40,
+        "weight": 1,
+        "allowedModes": [
+          "practice",
+          "survival",
+          "missions",
+          "dailyChallenge"
+        ],
+        "objects": [
+          {
+            "id": "floor-4",
+            "kind": "floor",
+            "primitive": "box",
+            "position": {
+              "x": 0,
+              "y": -0.3,
+              "z": 0
+            },
+            "size": {
+              "x": 15,
+              "y": 0.6,
+              "z": 40
+            },
+            "materialId": "concrete"
+          },
+          {
+            "id": "left-structure-4",
+            "kind": "wall",
+            "primitive": "box",
+            "position": {
+              "x": -7.9,
+              "y": 2.4,
+              "z": 5
+            },
+            "size": {
+              "x": 0.8,
+              "y": 8.8,
+              "z": 28.799999999999997
+            },
+            "materialId": "structure"
+          },
+          {
+            "id": "right-structure-4",
+            "kind": "wall",
+            "primitive": "box",
+            "position": {
+              "x": 7.9,
+              "y": 2.1,
+              "z": -4
+            },
+            "size": {
+              "x": 0.8,
+              "y": 7,
+              "z": 27.200000000000003
+            },
+            "materialId": "structure"
+          },
+          {
+            "id": "cover-4-a",
+            "kind": "cover",
+            "primitive": "box",
+            "position": {
+              "x": -1.7999999999999998,
+              "y": 0.72,
+              "z": 1
+            },
+            "size": {
+              "x": 3.2,
+              "y": 1.44,
+              "z": 1.58
+            },
+            "materialId": "cover",
+            "rotationY": 0.64
+          },
+          {
+            "id": "cover-4-b",
+            "kind": "cover",
+            "primitive": "box",
+            "position": {
+              "x": 2.1999999999999997,
+              "y": 0.86,
+              "z": 10.6
+            },
+            "size": {
+              "x": 3.4000000000000004,
+              "y": 1.72,
+              "z": 1.2
+            },
+            "materialId": "cover",
+            "rotationY": -0.48
+          },
+          {
+            "id": "tower-4",
+            "kind": "prop",
+            "primitive": "cylinder",
+            "position": {
+              "x": 6.2,
+              "y": 2.8,
+              "z": -8
+            },
+            "size": {
+              "x": 2.2,
+              "y": 9.6,
+              "z": 1.6
+            },
+            "materialId": "structure"
+          },
+          {
+            "id": "signal-4",
+            "kind": "prop",
+            "primitive": "cylinder",
+            "position": {
+              "x": -6.5,
+              "y": 1.3,
+              "z": 8
+            },
+            "size": {
+              "x": 1.1,
+              "y": 2.6,
+              "z": 1.1
+            },
+            "materialId": "accent"
+          },
+          {
+            "id": "light-4-a",
+            "kind": "light",
+            "primitive": "box",
+            "position": {
+              "x": -5,
+              "y": 4.8,
+              "z": -7
+            },
+            "size": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "materialId": "structure",
+            "metadata": {
+              "color": "#25F4D4",
+              "intensity": 15
+            }
+          },
+          {
+            "id": "light-4-b",
+            "kind": "light",
+            "primitive": "box",
+            "position": {
+              "x": 5,
+              "y": 4.2,
+              "z": 9
+            },
+            "size": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "materialId": "structure",
+            "metadata": {
+              "color": "#25F4D4",
+              "intensity": 13
+            }
+          },
+          {
+            "id": "enemy-4-a",
+            "kind": "enemy-spawn",
+            "primitive": "box",
+            "position": {
+              "x": -1.1999999999999997,
+              "y": 0,
+              "z": 10
+            },
+            "size": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "materialId": "structure",
+            "archetype": "turret"
+          },
+          {
+            "id": "enemy-4-b",
+            "kind": "enemy-spawn",
+            "primitive": "box",
+            "position": {
+              "x": 2,
+              "y": 0,
+              "z": 15
+            },
+            "size": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "materialId": "structure",
+            "archetype": "commander"
+          },
+          {
+            "id": "laser-4",
+            "kind": "hazard",
+            "primitive": "box",
+            "position": {
+              "x": 0,
+              "y": 0.12,
+              "z": 7.2
+            },
+            "size": {
+              "x": 0.22,
+              "y": 3.4,
+              "z": 3
+            },
+            "materialId": "hazard",
+            "damage": 18
+          },
+          {
+            "id": "objective-4",
+            "kind": "extraction",
+            "primitive": "cylinder",
+            "position": {
+              "x": 0,
+              "y": 1.4,
+              "z": 15
+            },
+            "size": {
+              "x": 1.4,
+              "y": 2.8,
+              "z": 1.4
+            },
+            "materialId": "accent"
+          }
+        ]
+      }
+    ],
+    "routes": {
+      "practice": [
+        "lab-entry",
+        "blackout-corridor",
+        "trip-laser-gallery",
+        "core-access",
+        "extraction-gate"
+      ],
+      "survival": [
+        "lab-entry",
+        "blackout-corridor",
+        "trip-laser-gallery",
+        "core-access",
+        "extraction-gate"
+      ],
+      "missions": [
+        "lab-entry",
+        "blackout-corridor",
+        "trip-laser-gallery",
+        "core-access",
+        "extraction-gate"
+      ],
+      "dailyChallenge": [
+        "lab-entry",
+        "blackout-corridor",
+        "trip-laser-gallery",
+        "core-access",
+        "extraction-gate"
+      ]
+    }
   }
 }

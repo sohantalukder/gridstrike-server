@@ -1,13 +1,15 @@
 {
-  "schemaVersion": 2,
-  "version": "2.0.0",
+  "schemaVersion": 3,
+  "version": "3.0.0",
   "id": "aurora-downtown",
   "environment": {
     "biome": "rooftop",
     "weather": "wind",
     "timeOfDay": "dusk",
     "terrainStyle": "rooftop-steel",
-    "hazardTypes": ["wind"]
+    "hazardTypes": [
+      "wind"
+    ]
   },
   "world": {
     "sectorWidth": 1100,
@@ -16,15 +18,155 @@
     "verticality": 1.48,
     "gapChance": 0.22,
     "hazardFrequency": 0.3,
-    "chunkMaps": ["maps/skyline-approach.tmx", "maps/tower-bridge.tmx"]
+    "chunkMaps": [
+      "maps/rooftop-approach.tmx",
+      "maps/construction-gap.tmx",
+      "maps/skybridge.tmx",
+      "maps/tower-roof.tmx",
+      "maps/commander-arena.tmx"
+    ],
+    "chunks": [
+      {
+        "id": "rooftop-approach",
+        "map": "maps/rooftop-approach.tmx",
+        "role": "intro",
+        "weight": 1,
+        "allowedModes": [
+          "practice",
+          "survival",
+          "missions",
+          "dailyChallenge"
+        ],
+        "order": 0
+      },
+      {
+        "id": "construction-gap",
+        "map": "maps/construction-gap.tmx",
+        "role": "combat",
+        "weight": 1.2,
+        "allowedModes": [
+          "practice",
+          "survival",
+          "missions",
+          "dailyChallenge"
+        ],
+        "order": 1
+      },
+      {
+        "id": "skybridge",
+        "map": "maps/skybridge.tmx",
+        "role": "objective",
+        "weight": 1,
+        "allowedModes": [
+          "practice",
+          "survival",
+          "missions",
+          "dailyChallenge"
+        ],
+        "order": 2
+      },
+      {
+        "id": "tower-roof",
+        "map": "maps/tower-roof.tmx",
+        "role": "combat",
+        "weight": 1.2,
+        "allowedModes": [
+          "practice",
+          "survival",
+          "missions",
+          "dailyChallenge"
+        ],
+        "order": 3
+      },
+      {
+        "id": "commander-arena",
+        "map": "maps/commander-arena.tmx",
+        "role": "boss",
+        "weight": 1,
+        "allowedModes": [
+          "practice",
+          "survival",
+          "missions",
+          "dailyChallenge"
+        ],
+        "order": 4
+      }
+    ],
+    "routes": {
+      "practice": {
+        "intro": "rooftop-approach",
+        "combatPool": [
+          "construction-gap",
+          "skybridge",
+          "tower-roof"
+        ],
+        "missionSequence": [],
+        "boss": "commander-arena",
+        "extraction": "commander-arena",
+        "loop": true
+      },
+      "survival": {
+        "intro": "rooftop-approach",
+        "combatPool": [
+          "construction-gap",
+          "skybridge",
+          "tower-roof"
+        ],
+        "missionSequence": [],
+        "boss": "commander-arena",
+        "extraction": "commander-arena",
+        "loop": true
+      },
+      "missions": {
+        "intro": "rooftop-approach",
+        "combatPool": [
+          "construction-gap",
+          "skybridge",
+          "tower-roof"
+        ],
+        "missionSequence": [
+          "rooftop-approach",
+          "construction-gap",
+          "skybridge",
+          "tower-roof",
+          "commander-arena"
+        ],
+        "boss": "commander-arena",
+        "extraction": "commander-arena",
+        "loop": false
+      },
+      "dailyChallenge": {
+        "intro": "rooftop-approach",
+        "combatPool": [
+          "construction-gap",
+          "skybridge",
+          "tower-roof"
+        ],
+        "missionSequence": [],
+        "boss": "commander-arena",
+        "extraction": "commander-arena",
+        "loop": true
+      }
+    },
+    "parallax": [
+      {
+        "path": "backgrounds/environment.webp",
+        "scrollFactor": 0.08,
+        "opacity": 1
+      }
+    ]
   },
   "combat": {
-    "enemyWeights": {"marksman": 0.42, "drone": 0.38, "commander": 0.2},
+    "enemyWeights": {
+      "marksman": 0.42,
+      "drone": 0.38,
+      "commander": 0.2
+    },
     "enemyDensity": 1.08,
     "bossEvery": 6,
     "healthMultiplier": 1.02,
     "damageMultiplier": 1.12,
-    "speedMultiplier": 1.0
+    "speedMultiplier": 1
   },
   "objective": {
     "type": "intelCommander",
@@ -33,16 +175,1246 @@
     "requiresExtraction": false
   },
   "modifiers": {
-    "moveSpeed": 1.0,
+    "moveSpeed": 1,
     "jump": 1.1,
     "gravity": 0.96,
-    "weaponDamage": 1.0,
+    "weaponDamage": 1,
     "projectileSpeed": 0.95,
     "weaponSpread": 1.12,
-    "reloadDuration": 1.0,
-    "reserveAmmo": 1.0,
+    "reloadDuration": 1,
+    "reserveAmmo": 1,
     "abilityCooldown": 0.92,
-    "shieldDuration": 1.0,
+    "shieldDuration": 1,
     "visibility": 0.94
+  },
+  "world3d": {
+    "enabled": true,
+    "renderer": "flame3d",
+    "laneWidth": 16,
+    "cameraFov": 64,
+    "cameraDistance": 11,
+    "fogDensity": 0.018,
+    "skyColor": "#08102B",
+    "materials": [
+      {
+        "id": "concrete",
+        "color": "#3A4355",
+        "metallic": 0.14,
+        "roughness": 0.7
+      },
+      {
+        "id": "structure",
+        "color": "#18243C",
+        "metallic": 0.66,
+        "roughness": 0.28
+      },
+      {
+        "id": "cover",
+        "color": "#52627A",
+        "metallic": 0.54,
+        "roughness": 0.34
+      },
+      {
+        "id": "accent",
+        "color": "#B487FF",
+        "metallic": 0.32,
+        "roughness": 0.2
+      },
+      {
+        "id": "hazard",
+        "color": "#73E8FF",
+        "metallic": 0.16,
+        "roughness": 0.16
+      }
+    ],
+    "chunks": [
+      {
+        "id": "rooftop-approach",
+        "role": "intro",
+        "length": 40,
+        "weight": 1,
+        "allowedModes": [
+          "practice",
+          "survival",
+          "missions",
+          "dailyChallenge"
+        ],
+        "objects": [
+          {
+            "id": "floor-0",
+            "kind": "floor",
+            "primitive": "box",
+            "position": {
+              "x": 0,
+              "y": -0.3,
+              "z": 0
+            },
+            "size": {
+              "x": 16,
+              "y": 0.6,
+              "z": 40
+            },
+            "materialId": "concrete"
+          },
+          {
+            "id": "left-structure-0",
+            "kind": "wall",
+            "primitive": "box",
+            "position": {
+              "x": -8.4,
+              "y": 2.4,
+              "z": 5
+            },
+            "size": {
+              "x": 0.8,
+              "y": 4.8,
+              "z": 28.799999999999997
+            },
+            "materialId": "structure"
+          },
+          {
+            "id": "right-structure-0",
+            "kind": "wall",
+            "primitive": "box",
+            "position": {
+              "x": 8.4,
+              "y": 2.1,
+              "z": -4
+            },
+            "size": {
+              "x": 0.8,
+              "y": 4.2,
+              "z": 27.200000000000003
+            },
+            "materialId": "structure"
+          },
+          {
+            "id": "cover-0-a",
+            "kind": "cover",
+            "primitive": "box",
+            "position": {
+              "x": -4,
+              "y": 0.72,
+              "z": -7
+            },
+            "size": {
+              "x": 3.2,
+              "y": 1.44,
+              "z": 1.1
+            },
+            "materialId": "cover"
+          },
+          {
+            "id": "cover-0-b",
+            "kind": "cover",
+            "primitive": "box",
+            "position": {
+              "x": 3.8,
+              "y": 0.86,
+              "z": 5
+            },
+            "size": {
+              "x": 2.6,
+              "y": 1.72,
+              "z": 1.2
+            },
+            "materialId": "cover"
+          },
+          {
+            "id": "tower-0",
+            "kind": "prop",
+            "primitive": "cylinder",
+            "position": {
+              "x": 6.2,
+              "y": 2.8,
+              "z": -12
+            },
+            "size": {
+              "x": 1.6,
+              "y": 5.6,
+              "z": 1.6
+            },
+            "materialId": "structure"
+          },
+          {
+            "id": "signal-0",
+            "kind": "prop",
+            "primitive": "cylinder",
+            "position": {
+              "x": -6.5,
+              "y": 1.3,
+              "z": 12
+            },
+            "size": {
+              "x": 1.1,
+              "y": 2.6,
+              "z": 1.1
+            },
+            "materialId": "accent"
+          },
+          {
+            "id": "light-0-a",
+            "kind": "light",
+            "primitive": "box",
+            "position": {
+              "x": -5,
+              "y": 4.8,
+              "z": -7
+            },
+            "size": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "materialId": "structure",
+            "metadata": {
+              "color": "#B487FF",
+              "intensity": 11
+            }
+          },
+          {
+            "id": "light-0-b",
+            "kind": "light",
+            "primitive": "box",
+            "position": {
+              "x": 5,
+              "y": 4.2,
+              "z": 9
+            },
+            "size": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "materialId": "structure",
+            "metadata": {
+              "color": "#B487FF",
+              "intensity": 9
+            }
+          },
+          {
+            "id": "enemy-0-a",
+            "kind": "enemy-spawn",
+            "primitive": "box",
+            "position": {
+              "x": -2.8,
+              "y": 0,
+              "z": 6
+            },
+            "size": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "materialId": "structure",
+            "archetype": "marksman"
+          },
+          {
+            "id": "enemy-0-b",
+            "kind": "enemy-spawn",
+            "primitive": "box",
+            "position": {
+              "x": 3.2,
+              "y": 0,
+              "z": 13
+            },
+            "size": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "materialId": "structure",
+            "archetype": "drone"
+          },
+          {
+            "id": "objective-0",
+            "kind": "objective",
+            "primitive": "cylinder",
+            "position": {
+              "x": 0,
+              "y": 1.4,
+              "z": 15
+            },
+            "size": {
+              "x": 1.4,
+              "y": 2.8,
+              "z": 1.4
+            },
+            "materialId": "accent"
+          }
+        ]
+      },
+      {
+        "id": "construction-gap",
+        "role": "combat",
+        "length": 44,
+        "weight": 1.2,
+        "allowedModes": [
+          "practice",
+          "survival",
+          "missions",
+          "dailyChallenge"
+        ],
+        "objects": [
+          {
+            "id": "floor-1",
+            "kind": "floor",
+            "primitive": "box",
+            "position": {
+              "x": 0,
+              "y": -0.3,
+              "z": 0
+            },
+            "size": {
+              "x": 7.04,
+              "y": 0.6,
+              "z": 44
+            },
+            "materialId": "concrete"
+          },
+          {
+            "id": "left-structure-1",
+            "kind": "wall",
+            "primitive": "box",
+            "position": {
+              "x": -8.4,
+              "y": 2.4,
+              "z": -5
+            },
+            "size": {
+              "x": 0.8,
+              "y": 5.8,
+              "z": 31.68
+            },
+            "materialId": "structure"
+          },
+          {
+            "id": "right-structure-1",
+            "kind": "wall",
+            "primitive": "box",
+            "position": {
+              "x": 8.4,
+              "y": 2.1,
+              "z": 6
+            },
+            "size": {
+              "x": 0.8,
+              "y": 4.9,
+              "z": 29.92
+            },
+            "materialId": "structure"
+          },
+          {
+            "id": "cover-1-a",
+            "kind": "cover",
+            "primitive": "box",
+            "position": {
+              "x": -3.45,
+              "y": 0.72,
+              "z": -5
+            },
+            "size": {
+              "x": 3.2,
+              "y": 1.44,
+              "z": 1.2200000000000002
+            },
+            "materialId": "cover",
+            "rotationY": 0.16
+          },
+          {
+            "id": "cover-1-b",
+            "kind": "cover",
+            "primitive": "box",
+            "position": {
+              "x": 3.4,
+              "y": 0.86,
+              "z": 6.4
+            },
+            "size": {
+              "x": 2.8000000000000003,
+              "y": 1.72,
+              "z": 1.2
+            },
+            "materialId": "cover",
+            "rotationY": -0.12
+          },
+          {
+            "id": "tower-1",
+            "kind": "prop",
+            "primitive": "box",
+            "position": {
+              "x": -6,
+              "y": 2.8,
+              "z": -11
+            },
+            "size": {
+              "x": 1.75,
+              "y": 6.6,
+              "z": 1.6
+            },
+            "materialId": "structure"
+          },
+          {
+            "id": "signal-1",
+            "kind": "prop",
+            "primitive": "cylinder",
+            "position": {
+              "x": 6.3,
+              "y": 1.3,
+              "z": 11
+            },
+            "size": {
+              "x": 1.1,
+              "y": 2.6,
+              "z": 1.1
+            },
+            "materialId": "accent"
+          },
+          {
+            "id": "light-1-a",
+            "kind": "light",
+            "primitive": "box",
+            "position": {
+              "x": -5,
+              "y": 4.8,
+              "z": -7
+            },
+            "size": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "materialId": "structure",
+            "metadata": {
+              "color": "#B487FF",
+              "intensity": 12
+            }
+          },
+          {
+            "id": "light-1-b",
+            "kind": "light",
+            "primitive": "box",
+            "position": {
+              "x": 5,
+              "y": 4.2,
+              "z": 9
+            },
+            "size": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "materialId": "structure",
+            "metadata": {
+              "color": "#FF6A2A",
+              "intensity": 10
+            }
+          },
+          {
+            "id": "enemy-1-a",
+            "kind": "enemy-spawn",
+            "primitive": "box",
+            "position": {
+              "x": -2.4,
+              "y": 0,
+              "z": 7
+            },
+            "size": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "materialId": "structure",
+            "archetype": "drone"
+          },
+          {
+            "id": "enemy-1-b",
+            "kind": "enemy-spawn",
+            "primitive": "box",
+            "position": {
+              "x": 2.9000000000000004,
+              "y": 0,
+              "z": 13.5
+            },
+            "size": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "materialId": "structure",
+            "archetype": "commander"
+          },
+          {
+            "id": "wind-1",
+            "kind": "hazard",
+            "primitive": "box",
+            "position": {
+              "x": -1.5,
+              "y": 0.12,
+              "z": 1.8
+            },
+            "size": {
+              "x": 5.4,
+              "y": 0.24,
+              "z": 3
+            },
+            "materialId": "hazard",
+            "damage": 12
+          },
+          {
+            "id": "objective-1",
+            "kind": "objective",
+            "primitive": "cylinder",
+            "position": {
+              "x": 4.6,
+              "y": 1.4,
+              "z": 15
+            },
+            "size": {
+              "x": 1.4,
+              "y": 2.8,
+              "z": 1.4
+            },
+            "materialId": "accent"
+          },
+          {
+            "id": "construction-bridge",
+            "kind": "floor",
+            "primitive": "box",
+            "position": {
+              "x": 4.6,
+              "y": 0.28,
+              "z": 4
+            },
+            "size": {
+              "x": 4.4,
+              "y": 0.55,
+              "z": 13
+            },
+            "materialId": "structure",
+            "rotationY": 0.12
+          }
+        ]
+      },
+      {
+        "id": "skybridge",
+        "role": "objective",
+        "length": 40,
+        "weight": 1,
+        "allowedModes": [
+          "practice",
+          "survival",
+          "missions",
+          "dailyChallenge"
+        ],
+        "objects": [
+          {
+            "id": "floor-2",
+            "kind": "floor",
+            "primitive": "box",
+            "position": {
+              "x": 0,
+              "y": -0.3,
+              "z": 0
+            },
+            "size": {
+              "x": 16,
+              "y": 0.6,
+              "z": 40
+            },
+            "materialId": "concrete"
+          },
+          {
+            "id": "left-structure-2",
+            "kind": "wall",
+            "primitive": "box",
+            "position": {
+              "x": -8.4,
+              "y": 2.4,
+              "z": 5
+            },
+            "size": {
+              "x": 0.8,
+              "y": 6.8,
+              "z": 28.799999999999997
+            },
+            "materialId": "structure"
+          },
+          {
+            "id": "right-structure-2",
+            "kind": "wall",
+            "primitive": "box",
+            "position": {
+              "x": 8.4,
+              "y": 2.1,
+              "z": -4
+            },
+            "size": {
+              "x": 0.8,
+              "y": 5.6,
+              "z": 27.200000000000003
+            },
+            "materialId": "structure"
+          },
+          {
+            "id": "cover-2-a",
+            "kind": "cover",
+            "primitive": "box",
+            "position": {
+              "x": -2.9,
+              "y": 0.72,
+              "z": -3
+            },
+            "size": {
+              "x": 3.2,
+              "y": 1.44,
+              "z": 1.34
+            },
+            "materialId": "cover",
+            "rotationY": 0.32
+          },
+          {
+            "id": "cover-2-b",
+            "kind": "cover",
+            "primitive": "box",
+            "position": {
+              "x": 3,
+              "y": 0.86,
+              "z": 7.8
+            },
+            "size": {
+              "x": 3,
+              "y": 1.72,
+              "z": 1.2
+            },
+            "materialId": "cover",
+            "rotationY": -0.24
+          },
+          {
+            "id": "tower-2",
+            "kind": "prop",
+            "primitive": "cylinder",
+            "position": {
+              "x": 6.2,
+              "y": 2.8,
+              "z": -10
+            },
+            "size": {
+              "x": 1.9000000000000001,
+              "y": 7.6,
+              "z": 1.6
+            },
+            "materialId": "structure"
+          },
+          {
+            "id": "signal-2",
+            "kind": "prop",
+            "primitive": "cylinder",
+            "position": {
+              "x": -6.5,
+              "y": 1.3,
+              "z": 10
+            },
+            "size": {
+              "x": 1.1,
+              "y": 2.6,
+              "z": 1.1
+            },
+            "materialId": "accent"
+          },
+          {
+            "id": "light-2-a",
+            "kind": "light",
+            "primitive": "box",
+            "position": {
+              "x": -5,
+              "y": 4.8,
+              "z": -7
+            },
+            "size": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "materialId": "structure",
+            "metadata": {
+              "color": "#B487FF",
+              "intensity": 13
+            }
+          },
+          {
+            "id": "light-2-b",
+            "kind": "light",
+            "primitive": "box",
+            "position": {
+              "x": 5,
+              "y": 4.2,
+              "z": 9
+            },
+            "size": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "materialId": "structure",
+            "metadata": {
+              "color": "#B487FF",
+              "intensity": 11
+            }
+          },
+          {
+            "id": "enemy-2-a",
+            "kind": "enemy-spawn",
+            "primitive": "box",
+            "position": {
+              "x": -1.9999999999999998,
+              "y": 0,
+              "z": 8
+            },
+            "size": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "materialId": "structure",
+            "archetype": "commander"
+          },
+          {
+            "id": "enemy-2-b",
+            "kind": "enemy-spawn",
+            "primitive": "box",
+            "position": {
+              "x": 2.6,
+              "y": 0,
+              "z": 14
+            },
+            "size": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "materialId": "structure",
+            "archetype": "marksman"
+          },
+          {
+            "id": "wind-2",
+            "kind": "hazard",
+            "primitive": "box",
+            "position": {
+              "x": 0,
+              "y": 0.12,
+              "z": 3.6
+            },
+            "size": {
+              "x": 5.4,
+              "y": 0.24,
+              "z": 3
+            },
+            "materialId": "hazard",
+            "damage": 12
+          },
+          {
+            "id": "objective-2",
+            "kind": "objective",
+            "primitive": "cylinder",
+            "position": {
+              "x": 0,
+              "y": 1.4,
+              "z": 15
+            },
+            "size": {
+              "x": 1.4,
+              "y": 2.8,
+              "z": 1.4
+            },
+            "materialId": "accent"
+          }
+        ]
+      },
+      {
+        "id": "tower-roof",
+        "role": "combat",
+        "length": 44,
+        "weight": 1.2,
+        "allowedModes": [
+          "practice",
+          "survival",
+          "missions",
+          "dailyChallenge"
+        ],
+        "objects": [
+          {
+            "id": "floor-3",
+            "kind": "floor",
+            "primitive": "box",
+            "position": {
+              "x": 0,
+              "y": -0.3,
+              "z": 0
+            },
+            "size": {
+              "x": 16,
+              "y": 0.6,
+              "z": 44
+            },
+            "materialId": "concrete"
+          },
+          {
+            "id": "left-structure-3",
+            "kind": "wall",
+            "primitive": "box",
+            "position": {
+              "x": -8.4,
+              "y": 2.4,
+              "z": -5
+            },
+            "size": {
+              "x": 0.8,
+              "y": 7.8,
+              "z": 31.68
+            },
+            "materialId": "structure"
+          },
+          {
+            "id": "right-structure-3",
+            "kind": "wall",
+            "primitive": "box",
+            "position": {
+              "x": 8.4,
+              "y": 2.1,
+              "z": 6
+            },
+            "size": {
+              "x": 0.8,
+              "y": 6.3,
+              "z": 29.92
+            },
+            "materialId": "structure"
+          },
+          {
+            "id": "cover-3-a",
+            "kind": "cover",
+            "primitive": "box",
+            "position": {
+              "x": -2.3499999999999996,
+              "y": 0.72,
+              "z": -1
+            },
+            "size": {
+              "x": 3.2,
+              "y": 1.44,
+              "z": 1.46
+            },
+            "materialId": "cover",
+            "rotationY": 0.48
+          },
+          {
+            "id": "cover-3-b",
+            "kind": "cover",
+            "primitive": "box",
+            "position": {
+              "x": 2.5999999999999996,
+              "y": 0.86,
+              "z": 9.2
+            },
+            "size": {
+              "x": 3.2,
+              "y": 1.72,
+              "z": 1.2
+            },
+            "materialId": "cover",
+            "rotationY": -0.36
+          },
+          {
+            "id": "tower-3",
+            "kind": "prop",
+            "primitive": "box",
+            "position": {
+              "x": -6,
+              "y": 2.8,
+              "z": -9
+            },
+            "size": {
+              "x": 2.05,
+              "y": 8.6,
+              "z": 1.6
+            },
+            "materialId": "structure"
+          },
+          {
+            "id": "signal-3",
+            "kind": "prop",
+            "primitive": "cylinder",
+            "position": {
+              "x": 6.3,
+              "y": 1.3,
+              "z": 9
+            },
+            "size": {
+              "x": 1.1,
+              "y": 2.6,
+              "z": 1.1
+            },
+            "materialId": "accent"
+          },
+          {
+            "id": "light-3-a",
+            "kind": "light",
+            "primitive": "box",
+            "position": {
+              "x": -5,
+              "y": 4.8,
+              "z": -7
+            },
+            "size": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "materialId": "structure",
+            "metadata": {
+              "color": "#B487FF",
+              "intensity": 14
+            }
+          },
+          {
+            "id": "light-3-b",
+            "kind": "light",
+            "primitive": "box",
+            "position": {
+              "x": 5,
+              "y": 4.2,
+              "z": 9
+            },
+            "size": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "materialId": "structure",
+            "metadata": {
+              "color": "#FF6A2A",
+              "intensity": 12
+            }
+          },
+          {
+            "id": "enemy-3-a",
+            "kind": "enemy-spawn",
+            "primitive": "box",
+            "position": {
+              "x": -1.5999999999999996,
+              "y": 0,
+              "z": 9
+            },
+            "size": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "materialId": "structure",
+            "archetype": "marksman"
+          },
+          {
+            "id": "enemy-3-b",
+            "kind": "enemy-spawn",
+            "primitive": "box",
+            "position": {
+              "x": 2.3000000000000003,
+              "y": 0,
+              "z": 14.5
+            },
+            "size": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "materialId": "structure",
+            "archetype": "drone"
+          },
+          {
+            "id": "objective-3",
+            "kind": "objective",
+            "primitive": "cylinder",
+            "position": {
+              "x": 4.6,
+              "y": 1.4,
+              "z": 15
+            },
+            "size": {
+              "x": 1.4,
+              "y": 2.8,
+              "z": 1.4
+            },
+            "materialId": "accent"
+          }
+        ]
+      },
+      {
+        "id": "commander-arena",
+        "role": "boss",
+        "length": 40,
+        "weight": 1,
+        "allowedModes": [
+          "practice",
+          "survival",
+          "missions",
+          "dailyChallenge"
+        ],
+        "objects": [
+          {
+            "id": "floor-4",
+            "kind": "floor",
+            "primitive": "box",
+            "position": {
+              "x": 0,
+              "y": -0.3,
+              "z": 0
+            },
+            "size": {
+              "x": 16,
+              "y": 0.6,
+              "z": 40
+            },
+            "materialId": "concrete"
+          },
+          {
+            "id": "left-structure-4",
+            "kind": "wall",
+            "primitive": "box",
+            "position": {
+              "x": -8.4,
+              "y": 2.4,
+              "z": 5
+            },
+            "size": {
+              "x": 0.8,
+              "y": 8.8,
+              "z": 28.799999999999997
+            },
+            "materialId": "structure"
+          },
+          {
+            "id": "right-structure-4",
+            "kind": "wall",
+            "primitive": "box",
+            "position": {
+              "x": 8.4,
+              "y": 2.1,
+              "z": -4
+            },
+            "size": {
+              "x": 0.8,
+              "y": 7,
+              "z": 27.200000000000003
+            },
+            "materialId": "structure"
+          },
+          {
+            "id": "cover-4-a",
+            "kind": "cover",
+            "primitive": "box",
+            "position": {
+              "x": -1.7999999999999998,
+              "y": 0.72,
+              "z": 1
+            },
+            "size": {
+              "x": 3.2,
+              "y": 1.44,
+              "z": 1.58
+            },
+            "materialId": "cover",
+            "rotationY": 0.64
+          },
+          {
+            "id": "cover-4-b",
+            "kind": "cover",
+            "primitive": "box",
+            "position": {
+              "x": 2.1999999999999997,
+              "y": 0.86,
+              "z": 10.6
+            },
+            "size": {
+              "x": 3.4000000000000004,
+              "y": 1.72,
+              "z": 1.2
+            },
+            "materialId": "cover",
+            "rotationY": -0.48
+          },
+          {
+            "id": "tower-4",
+            "kind": "prop",
+            "primitive": "cylinder",
+            "position": {
+              "x": 6.2,
+              "y": 2.8,
+              "z": -8
+            },
+            "size": {
+              "x": 2.2,
+              "y": 9.6,
+              "z": 1.6
+            },
+            "materialId": "structure"
+          },
+          {
+            "id": "signal-4",
+            "kind": "prop",
+            "primitive": "cylinder",
+            "position": {
+              "x": -6.5,
+              "y": 1.3,
+              "z": 8
+            },
+            "size": {
+              "x": 1.1,
+              "y": 2.6,
+              "z": 1.1
+            },
+            "materialId": "accent"
+          },
+          {
+            "id": "light-4-a",
+            "kind": "light",
+            "primitive": "box",
+            "position": {
+              "x": -5,
+              "y": 4.8,
+              "z": -7
+            },
+            "size": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "materialId": "structure",
+            "metadata": {
+              "color": "#B487FF",
+              "intensity": 15
+            }
+          },
+          {
+            "id": "light-4-b",
+            "kind": "light",
+            "primitive": "box",
+            "position": {
+              "x": 5,
+              "y": 4.2,
+              "z": 9
+            },
+            "size": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "materialId": "structure",
+            "metadata": {
+              "color": "#B487FF",
+              "intensity": 13
+            }
+          },
+          {
+            "id": "enemy-4-a",
+            "kind": "enemy-spawn",
+            "primitive": "box",
+            "position": {
+              "x": -1.1999999999999997,
+              "y": 0,
+              "z": 10
+            },
+            "size": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "materialId": "structure",
+            "archetype": "drone"
+          },
+          {
+            "id": "enemy-4-b",
+            "kind": "enemy-spawn",
+            "primitive": "box",
+            "position": {
+              "x": 2,
+              "y": 0,
+              "z": 15
+            },
+            "size": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "materialId": "structure",
+            "archetype": "commander"
+          },
+          {
+            "id": "wind-4",
+            "kind": "hazard",
+            "primitive": "box",
+            "position": {
+              "x": 0,
+              "y": 0.12,
+              "z": 7.2
+            },
+            "size": {
+              "x": 5.4,
+              "y": 0.24,
+              "z": 3
+            },
+            "materialId": "hazard",
+            "damage": 12
+          },
+          {
+            "id": "boss-4",
+            "kind": "boss-spawn",
+            "primitive": "box",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 15
+            },
+            "size": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            },
+            "materialId": "structure",
+            "archetype": "commander"
+          }
+        ]
+      }
+    ],
+    "routes": {
+      "practice": [
+        "rooftop-approach",
+        "construction-gap",
+        "skybridge",
+        "tower-roof",
+        "commander-arena"
+      ],
+      "survival": [
+        "rooftop-approach",
+        "construction-gap",
+        "skybridge",
+        "tower-roof",
+        "commander-arena"
+      ],
+      "missions": [
+        "rooftop-approach",
+        "construction-gap",
+        "skybridge",
+        "tower-roof",
+        "commander-arena"
+      ],
+      "dailyChallenge": [
+        "rooftop-approach",
+        "construction-gap",
+        "skybridge",
+        "tower-roof",
+        "commander-arena"
+      ]
+    }
   }
 }

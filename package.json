@@ -22,6 +22,7 @@
     "db:reach": "node scripts/db-reachability.js",
     "db:migrate:local": "npm run prisma:generate && npm run prisma:migrate",
     "db:migrate:prod": "npm run prisma:generate && npm run prisma:migrate:deploy",
+    "scenarios:author": "node scripts/author-scenario-maps.js",
     "scenarios:build": "node scripts/scenario-packs.js",
     "scenarios:publish": "node scripts/scenario-packs.js --upload"
   },
