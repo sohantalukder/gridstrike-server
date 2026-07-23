@@ -8,6 +8,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: .env
     concurrency:
       group: gridstrike-server-deploy
       cancel-in-progress: true
