@@ -1,6 +1,32 @@
+import { Type } from 'class-transformer';
 import { IsIn, IsNotEmpty, IsOptional, IsString, IsInt, IsUrl } from 'class-validator';
 
+export const ENV_KEYS = [
+  'PORT',
+  'SUPABASE_URL',
+  'SUPABASE_PUBLISHABLE_KEY',
+  'SUPABASE_SECRET_KEY',
+  'SUPABASE_JWKS_URL',
+  'DATABASE_URL',
+  'DIRECT_URL',
+  'REDIS_HOST',
+  'REDIS_PORT',
+  'REDIS_PASSWORD',
+  'JWT_ACCESS_SECRET',
+  'JWT_REFRESH_SECRET',
+  'JWT_ACCESS_EXPIRES_IN',
+  'JWT_REFRESH_EXPIRES_IN',
+  'NODE_ENV',
+] as const;
+
+export function pickEnvConfig(config: Record<string, unknown>): Record<string, unknown> {
+  return Object.fromEntries(
+    ENV_KEYS.filter((key) => config[key] !== undefined).map((key) => [key, config[key]]),
+  );
+}
+
 export class EnvironmentVariables {
+  @Type(() => Number)
   @IsInt()
   PORT = 3000;
 
@@ -20,11 +46,11 @@ export class EnvironmentVariables {
   @IsNotEmpty()
   SUPABASE_JWKS_URL = 'https://example.supabase.co/auth/v1/.well-known/jwks.json';
 
-  @IsUrl({ require_tld: false }, { message: 'DATABASE_URL invalid' })
-  @IsNotEmpty()
+  @IsString()
+  @IsNotEmpty({ message: 'DATABASE_URL invalid' })
   DATABASE_URL = 'postgresql://postgres:password@localhost:5432/gridstrike';
 
-  @IsUrl({ require_tld: false }, { message: 'DIRECT_URL invalid' })
+  @IsString()
   @IsOptional()
   DIRECT_URL = 'postgresql://postgres:password@localhost:5432/gridstrike';
 
@@ -32,6 +58,7 @@ export class EnvironmentVariables {
   @IsNotEmpty()
   REDIS_HOST = '127.0.0.1';
 
+  @Type(() => Number)
   @IsInt()
   REDIS_PORT = 6379;
 
@@ -56,6 +83,6 @@ export class EnvironmentVariables {
   JWT_REFRESH_EXPIRES_IN = '30d';
 
   @IsString()
-  @IsIn(['prod'], { message: 'NODE_ENV must be prod' })
+  @IsIn(['prod', 'local', 'dev'], { message: 'NODE_ENV must be prod, local, or dev' })
   NODE_ENV = 'prod';
 }

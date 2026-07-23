@@ -23,7 +23,7 @@ import { RedisModule } from './infrastructure/redis/redis.module';
 import { QueuesModule } from './infrastructure/queues/queues.module';
 import { HealthModule } from './modules/health/health.module';
 import { PrismaModule } from './infrastructure/database/prisma.module';
-import { EnvironmentVariables } from './config/env.validation';
+import { EnvironmentVariables, pickEnvConfig } from './config/env.validation';
 
 @Module({
   imports: [
@@ -31,7 +31,7 @@ import { EnvironmentVariables } from './config/env.validation';
       isGlobal: true,
       envFilePath: '.env',
       validate: (config) => {
-        const parsed = plainToInstance(EnvironmentVariables, config, {
+        const parsed = plainToInstance(EnvironmentVariables, pickEnvConfig(config), {
           enableImplicitConversion: true,
         });
         const errors = validateSync(parsed, { whitelist: true, forbidNonWhitelisted: true });
