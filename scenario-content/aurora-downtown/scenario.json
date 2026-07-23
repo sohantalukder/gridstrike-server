@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "version": "3.0.0",
+  "version": "3.0.1",
   "id": "aurora-downtown",
   "environment": {
     "biome": "rooftop",
@@ -1382,6 +1382,22 @@
             },
             "materialId": "structure",
             "archetype": "commander"
+          },
+          {
+            "id": "objective-4",
+            "kind": "objective",
+            "primitive": "cylinder",
+            "position": {
+              "x": -5.2,
+              "y": 1.4,
+              "z": 15
+            },
+            "size": {
+              "x": 1.4,
+              "y": 2.8,
+              "z": 1.4
+            },
+            "materialId": "accent"
           }
         ]
       }

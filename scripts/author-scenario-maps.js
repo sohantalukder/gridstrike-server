@@ -274,6 +274,14 @@ function geometry3dFor(scenarioId, config, chunk, index) {
         position: vector3(0, 0, 15),
         archetype: "commander",
       }),
+      object3d({
+        id: `objective-${index}`,
+        kind: "objective",
+        primitive: "cylinder",
+        position: vector3(-5.2, 1.4, 15),
+        size: vector3(1.4, 2.8, 1.4),
+        materialId: "accent",
+      }),
     );
   } else {
     objects.push(
@@ -625,7 +633,7 @@ async function main() {
     const scenarioPath = path.join(scenarioRoot, "scenario.json");
     const scenario = JSON.parse(await fs.readFile(scenarioPath, "utf8"));
     scenario.schemaVersion = 3;
-    scenario.version = "3.0.0";
+    scenario.version = "3.0.1";
     scenario.world.chunkMaps = config.chunks.map(
       ([id]) => `maps/${id}.tmx`,
     );
