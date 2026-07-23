@@ -16,5 +16,5 @@
     "types": ["node", "jest"],
     "sourceMap": true
   },
-  "exclude": ["node_modules", "dist", "test", "**/*.{spec,test}.ts"]
+  "exclude": ["node_modules", "dist", "test", "cloudflare", "**/*.{spec,test}.ts"]
 }

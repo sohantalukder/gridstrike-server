@@ -1,0 +1,32 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "gridstrike-server",
+  "main": "cloudflare/worker.ts",
+  "compatibility_date": "2026-07-23",
+  "keep_vars": true,
+  "observability": {
+    "enabled": true
+  },
+  "containers": [
+    {
+      "class_name": "GridStrikeServerContainer",
+      "image": "./Dockerfile",
+      "max_instances": 1,
+      "instance_type": "lite"
+    }
+  ],
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "GRIDSTRIKE_SERVER",
+        "class_name": "GridStrikeServerContainer"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["GridStrikeServerContainer"]
+    }
+  ]
+}

@@ -75,14 +75,18 @@ API docs are disabled in production.
 - `GET /api/v1/leaderboards/survival|missions|daily|me`
 - `GET /api/v1/health*`
 
-## Auto deploy from `main` (Cloudflare + VPS)
+## Cloudflare deploy
 
-This repository now includes a GitHub Actions workflow for main-branch deploy:
+This repo deploys to Cloudflare as a Container behind a Worker. Do not use PM2
+in the Cloudflare deploy command because Cloudflare's build container is not a
+long running server host.
 
-- `.github/workflows/deploy-main.yml`
+Recommended Cloudflare settings:
 
-The workflow builds the NestJS app and deploys it by SSH to your server, then restarts with PM2.
+- Root directory: `/`
+- Build command: `npm run build`
+- Deploy command: `npx wrangler deploy`
 
-For Cloudflare setup details (DNS/proxy/SSL on free plan and required GitHub secrets), see:
+For details, see:
 
-- [CLOUDFLARE_FREE_DEPLOY.md](/Users/sohantalukder/Development/Practices/grid-strike/gridstrike-server/CLOUDFLARE_FREE_DEPLOY.md)
+- [CLOUDFLARE_FREE_DEPLOY.md](CLOUDFLARE_FREE_DEPLOY.md)
