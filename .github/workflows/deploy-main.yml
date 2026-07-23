@@ -16,6 +16,25 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Validate deploy secrets
+        run: |
+          if [ -z "${{ secrets.PROD_HOST }}" ]; then
+            echo "::error::Missing secret: PROD_HOST"
+            exit 1
+          fi
+          if [ -z "${{ secrets.PROD_SSH_USER }}" ]; then
+            echo "::error::Missing secret: PROD_SSH_USER"
+            exit 1
+          fi
+          if [ -z "${{ secrets.PROD_SSH_KEY }}" ]; then
+            echo "::error::Missing secret: PROD_SSH_KEY"
+            exit 1
+          fi
+          if [ -z "${{ secrets.PROD_APP_DIR }}" ]; then
+            echo "::error::Missing secret: PROD_APP_DIR"
+            exit 1
+          fi
+
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
@@ -34,7 +53,7 @@ jobs:
           host: ${{ secrets.PROD_HOST }}
           username: ${{ secrets.PROD_SSH_USER }}
           key: ${{ secrets.PROD_SSH_KEY }}
-          port: ${{ secrets.PROD_SSH_PORT || 22 }}
+          port: ${{ secrets.PROD_SSH_PORT || '22' }}
           script_stop: true
           command_timeout: 20m
           script: |
