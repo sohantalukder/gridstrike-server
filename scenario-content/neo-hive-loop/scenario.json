@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 2,
+  "version": "2.0.0",
+  "id": "neo-hive-loop",
+  "environment": {
+    "biome": "urban",
+    "weather": "rain",
+    "timeOfDay": "night",
+    "terrainStyle": "wet-concrete",
+    "hazardTypes": ["electric"]
+  },
+  "world": {
+    "sectorWidth": 900,
+    "platformMin": 3,
+    "platformMax": 5,
+    "verticality": 1.15,
+    "gapChance": 0.08,
+    "hazardFrequency": 0.32,
+    "chunkMaps": ["maps/market-approach.tmx", "maps/rooftop-relay.tmx"]
+  },
+  "combat": {
+    "enemyWeights": {"rifleman": 0.48, "drone": 0.32, "turret": 0.2},
+    "enemyDensity": 1.12,
+    "bossEvery": 9,
+    "healthMultiplier": 1.0,
+    "damageMultiplier": 1.0,
+    "speedMultiplier": 1.04
+  },
+  "objective": {
+    "type": "capture",
+    "target": 5,
+    "timeLimitSeconds": 0,
+    "requiresExtraction": false
+  },
+  "modifiers": {
+    "moveSpeed": 1.05,
+    "jump": 1.0,
+    "gravity": 1.0,
+    "weaponDamage": 1.0,
+    "projectileSpeed": 1.0,
+    "weaponSpread": 1.0,
+    "reloadDuration": 1.1,
+    "reserveAmmo": 1.0,
+    "abilityCooldown": 1.0,
+    "shieldDuration": 1.0,
+    "visibility": 0.82
+  }
+}

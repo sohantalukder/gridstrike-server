@@ -1,0 +1,37 @@
+{
+  "aurora-downtown": {
+    "version": "2.0.0",
+    "packSha256": "9e8f96f18308935fbca385ddc379603196e915b5efba1774a2519067e63d296f",
+    "packSizeBytes": 67315,
+    "previewSha256": "12516a1fdf001dd9b03f0e8523b5a657ecb8b511bba546015951159bbabb2c9e",
+    "previewSizeBytes": 65446
+  },
+  "carbon-works": {
+    "version": "2.0.0",
+    "packSha256": "d17d0ba6039da113fb69f0e1ce8ce0969c3661788a9a95ce60fb7a7b7a74bce8",
+    "packSizeBytes": 100404,
+    "previewSha256": "3c0344969eba553d8e59dae3de15c10e10885b08e23eed04359459ae96ba8618",
+    "previewSizeBytes": 98540
+  },
+  "metro-gridline": {
+    "version": "2.0.0",
+    "packSha256": "1a906b47c19af1f208b38848155da6709849d5fdcc6f270f64875af9d36049d8",
+    "packSizeBytes": 101446,
+    "previewSha256": "4beb87291710241d90040f3bb23692baee03f192cf90f83c823fe1b280b1274b",
+    "previewSizeBytes": 99570
+  },
+  "neo-hive-loop": {
+    "version": "2.0.0",
+    "packSha256": "e3710a7ec83439a74f6708f93ac7b19e6a86e5eee5f87f3cd033e5a3df9f0ae0",
+    "packSizeBytes": 97607,
+    "previewSha256": "b2069c5323399eb1a265dc6a8879d2fb1a984a1b0e444df243a8d73faff3bc56",
+    "previewSizeBytes": 95748
+  },
+  "quantum-corridor": {
+    "version": "2.0.0",
+    "packSha256": "74e4a2e1f116261e9cbd6334a318b9bff9e68a9f387aea55e61ad3c737d5ed70",
+    "packSizeBytes": 88920,
+    "previewSha256": "d677ef5bbfee14c75fe7571969492e903983bdbb5aa610976a4f664b20e3903f",
+    "previewSizeBytes": 87042
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 2,
+  "version": "2.0.0",
+  "id": "carbon-works",
+  "environment": {
+    "biome": "foundry",
+    "weather": "dust",
+    "timeOfDay": "dusk",
+    "terrainStyle": "steel-foundry",
+    "hazardTypes": ["steam", "fire"]
+  },
+  "world": {
+    "sectorWidth": 1040,
+    "platformMin": 2,
+    "platformMax": 4,
+    "verticality": 0.9,
+    "gapChance": 0.1,
+    "hazardFrequency": 0.42,
+    "chunkMaps": ["maps/steam-riser.tmx", "maps/crane-deck.tmx"]
+  },
+  "combat": {
+    "enemyWeights": {"heavy": 0.42, "rifleman": 0.36, "turret": 0.22},
+    "enemyDensity": 1.16,
+    "bossEvery": 7,
+    "healthMultiplier": 1.18,
+    "damageMultiplier": 1.08,
+    "speedMultiplier": 0.92
+  },
+  "objective": {
+    "type": "destroy",
+    "target": 3,
+    "timeLimitSeconds": 0,
+    "requiresExtraction": false
+  },
+  "modifiers": {
+    "moveSpeed": 0.92,
+    "jump": 0.96,
+    "gravity": 1.04,
+    "weaponDamage": 1.1,
+    "projectileSpeed": 1.0,
+    "weaponSpread": 1.0,
+    "reloadDuration": 1.08,
+    "reserveAmmo": 1.15,
+    "abilityCooldown": 1.0,
+    "shieldDuration": 1.0,
+    "visibility": 0.88
+  }
+}

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="12" tilewidth="64" tileheight="64" infinite="0" nextlayerid="4" nextobjectid="5">
+ <imagelayer id="3" name="Backdrop" repeatx="1"><image source="backgrounds/environment.webp" width="1600" height="900"/></imagelayer>
+ <objectgroup id="1" name="Collision">
+  <object id="1" name="foundry-floor" type="terrain" x="0" y="620" width="1920" height="148"/>
+  <object id="2" name="pipe-bank" type="cover" x="580" y="470" width="360" height="150"/>
+ </objectgroup>
+ <objectgroup id="2" name="Gameplay">
+  <object id="3" name="generator-a" type="objective" x="1460" y="540"><point/></object>
+  <object id="4" name="steam-vent" type="steam" x="1020" y="570" width="180" height="50"/>
+ </objectgroup>
+</map>

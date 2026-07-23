@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 2,
+  "version": "2.0.0",
+  "id": "quantum-corridor",
+  "environment": {
+    "biome": "laboratory",
+    "weather": "indoor",
+    "timeOfDay": "indoor",
+    "terrainStyle": "defense-lab",
+    "hazardTypes": ["laser", "shutter"]
+  },
+  "world": {
+    "sectorWidth": 930,
+    "platformMin": 2,
+    "platformMax": 4,
+    "verticality": 0.84,
+    "gapChance": 0.02,
+    "hazardFrequency": 0.48,
+    "chunkMaps": ["maps/lab-entry.tmx", "maps/core-access.tmx"]
+  },
+  "combat": {
+    "enemyWeights": {"drone": 0.45, "turret": 0.35, "commander": 0.2},
+    "enemyDensity": 1.2,
+    "bossEvery": 6,
+    "healthMultiplier": 1.08,
+    "damageMultiplier": 1.08,
+    "speedMultiplier": 1.02
+  },
+  "objective": {
+    "type": "sabotageExtract",
+    "target": 3,
+    "timeLimitSeconds": 0,
+    "requiresExtraction": true
+  },
+  "modifiers": {
+    "moveSpeed": 0.96,
+    "jump": 1.0,
+    "gravity": 1.0,
+    "weaponDamage": 1.0,
+    "projectileSpeed": 1.0,
+    "weaponSpread": 1.0,
+    "reloadDuration": 1.0,
+    "reserveAmmo": 0.85,
+    "abilityCooldown": 0.85,
+    "shieldDuration": 1.15,
+    "visibility": 0.7
+  }
+}

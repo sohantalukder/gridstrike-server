@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="12" tilewidth="64" tileheight="64" infinite="0" nextlayerid="4" nextobjectid="5">
+ <imagelayer id="3" name="Backdrop" repeatx="1"><image source="backgrounds/environment.webp" width="1600" height="900"/></imagelayer>
+ <objectgroup id="1" name="Collision">
+  <object id="1" name="crane-deck" type="terrain" x="0" y="570" width="1920" height="198"/>
+  <object id="2" name="furnace-shield" type="cover" x="840" y="420" width="280" height="150"/>
+ </objectgroup>
+ <objectgroup id="2" name="Gameplay">
+  <object id="3" name="generator-b" type="objective" x="1640" y="500"><point/></object>
+  <object id="4" name="fire-vent" type="fire" x="1220" y="525" width="190" height="45"/>
+ </objectgroup>
+</map>

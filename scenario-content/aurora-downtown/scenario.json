@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 2,
+  "version": "2.0.0",
+  "id": "aurora-downtown",
+  "environment": {
+    "biome": "rooftop",
+    "weather": "wind",
+    "timeOfDay": "dusk",
+    "terrainStyle": "rooftop-steel",
+    "hazardTypes": ["wind"]
+  },
+  "world": {
+    "sectorWidth": 1100,
+    "platformMin": 3,
+    "platformMax": 5,
+    "verticality": 1.48,
+    "gapChance": 0.22,
+    "hazardFrequency": 0.3,
+    "chunkMaps": ["maps/skyline-approach.tmx", "maps/tower-bridge.tmx"]
+  },
+  "combat": {
+    "enemyWeights": {"marksman": 0.42, "drone": 0.38, "commander": 0.2},
+    "enemyDensity": 1.08,
+    "bossEvery": 6,
+    "healthMultiplier": 1.02,
+    "damageMultiplier": 1.12,
+    "speedMultiplier": 1.0
+  },
+  "objective": {
+    "type": "intelCommander",
+    "target": 4,
+    "timeLimitSeconds": 0,
+    "requiresExtraction": false
+  },
+  "modifiers": {
+    "moveSpeed": 1.0,
+    "jump": 1.1,
+    "gravity": 0.96,
+    "weaponDamage": 1.0,
+    "projectileSpeed": 0.95,
+    "weaponSpread": 1.12,
+    "reloadDuration": 1.0,
+    "reserveAmmo": 1.0,
+    "abilityCooldown": 0.92,
+    "shieldDuration": 1.0,
+    "visibility": 0.94
+  }
+}

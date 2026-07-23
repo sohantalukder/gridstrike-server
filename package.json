@@ -21,7 +21,9 @@
     "env:check": "node scripts/env-audit.js",
     "db:reach": "node scripts/db-reachability.js",
     "db:migrate:local": "npm run prisma:generate && npm run prisma:migrate",
-    "db:migrate:prod": "npm run prisma:generate && npm run prisma:migrate:deploy"
+    "db:migrate:prod": "npm run prisma:generate && npm run prisma:migrate:deploy",
+    "scenarios:build": "node scripts/scenario-packs.js",
+    "scenarios:publish": "node scripts/scenario-packs.js --upload"
   },
   "dependencies": {
     "@cloudflare/containers": "^0.3.7",
@@ -42,6 +44,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "dotenv": "^16.4.5",
+    "fflate": "^0.8.3",
     "ioredis": "^5.4.1",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
@@ -66,5 +69,19 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4",
     "wrangler": "^4.113.0"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "src",
+    "testRegex": ".*\\.spec\\.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "testEnvironment": "node",
+    "watchman": false
   }
 }

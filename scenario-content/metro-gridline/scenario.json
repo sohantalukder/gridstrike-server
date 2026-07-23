@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 2,
+  "version": "2.0.0",
+  "id": "metro-gridline",
+  "environment": {
+    "biome": "metro",
+    "weather": "indoor",
+    "timeOfDay": "indoor",
+    "terrainStyle": "transit-concrete",
+    "hazardTypes": ["rail"]
+  },
+  "world": {
+    "sectorWidth": 980,
+    "platformMin": 1,
+    "platformMax": 3,
+    "verticality": 0.72,
+    "gapChance": 0.04,
+    "hazardFrequency": 0.38,
+    "chunkMaps": ["maps/ring-platform.tmx", "maps/service-shaft.tmx"]
+  },
+  "combat": {
+    "enemyWeights": {"rifleman": 0.46, "marksman": 0.34, "turret": 0.2},
+    "enemyDensity": 1.08,
+    "bossEvery": 10,
+    "healthMultiplier": 0.96,
+    "damageMultiplier": 1.05,
+    "speedMultiplier": 1.05
+  },
+  "objective": {
+    "type": "extract",
+    "target": 7,
+    "timeLimitSeconds": 0,
+    "requiresExtraction": true
+  },
+  "modifiers": {
+    "moveSpeed": 1.1,
+    "jump": 0.95,
+    "gravity": 1.0,
+    "weaponDamage": 1.0,
+    "projectileSpeed": 1.0,
+    "weaponSpread": 0.92,
+    "reloadDuration": 1.0,
+    "reserveAmmo": 1.0,
+    "abilityCooldown": 1.05,
+    "shieldDuration": 1.0,
+    "visibility": 0.9
+  }
+}
