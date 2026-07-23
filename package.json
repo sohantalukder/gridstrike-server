@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "description": "GridStrike backend API",
-  "packageManager": "npm@10.9.2",
   "scripts": {
     "build": "nest build",
     "start": "nest start",
