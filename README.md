@@ -2,36 +2,65 @@
 
 Backend API for GridStrike.
 
-## Local setup (no Docker)
+## Environment setup (production only)
 
-1. Install PostgreSQL and Redis locally.
-2. Create database: `createdb gridstrike`
-3. Copy environment file:
+This branch is configured for production-only environment loading.
+
+1. Copy prod env template to `.env`:
 
 ```bash
 cp .env.example .env
 ```
 
-4. Install dependencies:
+2. Install dependencies:
 
 ```bash
 npm install
 ```
 
-5. Generate Prisma client and migrate DB:
+3. Generate Prisma client and migrate DB:
 
 ```bash
 npx prisma generate
 npx prisma migrate dev
 ```
 
-6. Start server:
+### Practical DB & migration workflow
+
+This project includes helper scripts for repeatable DB operations:
 
 ```bash
-npm run start:dev
+# 1) Smoke test the active DATABASE_URL
+npm run db:check
+
+# 1b) Test both DATABASE_URL and DIRECT_URL endpoint reachability
+npm run db:reach
+
+# 1a) Validate environment keys/format
+npm run env:check
+
+# 2) Generate Prisma client
+npm run prisma:generate
+
+# 3) Run local migrations (creates and applies migration files)
+npm run db:migrate:local
+
+# 4) Show migration status
+npm run prisma:migrate:status
+
+# 5) Apply migrations in production/database servers (non-interactive)
+npm run db:migrate:prod
 ```
 
-API docs (development): `http://localhost:3000/docs`
+`npm run db:check` exits with code `0` when the DB is reachable and exits with code `1` when it cannot connect.
+
+4. Start server:
+
+```bash
+NODE_ENV=prod npm run start:prod
+```
+
+API docs are disabled in production.
 
 ## API quick matrix
 

@@ -8,11 +8,19 @@
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:prod": "node dist/main",
+    "db:check": "npm run prisma:generate && node scripts/db-check.js",
     "lint": "eslint 'src/**/*.ts' --fix",
     "test": "jest",
     "test:watch": "jest --watch",
     "prisma:generate": "npx prisma generate",
-    "prisma:migrate": "npx prisma migrate dev"
+    "prisma:migrate": "npx prisma migrate dev",
+    "prisma:migrate:status": "npx prisma migrate status",
+    "prisma:migrate:deploy": "npx prisma migrate deploy",
+    "prisma:migrate:reset": "npx prisma migrate reset --force",
+    "env:check": "node scripts/env-audit.js",
+    "db:reach": "node scripts/db-reachability.js",
+    "db:migrate:local": "npm run prisma:generate && npm run prisma:migrate",
+    "db:migrate:prod": "npm run prisma:generate && npm run prisma:migrate:deploy"
   },
   "dependencies": {
     "@nestjs/bullmq": "^11.0.4",

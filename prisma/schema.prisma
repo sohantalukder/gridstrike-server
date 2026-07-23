@@ -5,6 +5,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 enum AuthMode {
@@ -72,6 +73,7 @@ model PlayerProfile {
   leaderboardEntries LeaderboardEntry[]
   inventoryItems PlayerInventoryItem[]
   settings       PlayerSettings?
+  playerAchievements PlayerAchievement[]
 }
 
 model Weapon {
@@ -270,6 +272,7 @@ model Achievement {
   key       String @unique
   title     String
   description String
+  playerAchievements PlayerAchievement[]
 }
 
 model PlayerAchievement {

@@ -19,8 +19,8 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   const cfg = app.get(ConfigService);
-  const env = cfg.get<string>('NODE_ENV') ?? 'development';
-  if (env === 'development') {
+  const env = cfg.get<string>('NODE_ENV') ?? 'prod';
+  if (env === 'local') {
     SwaggerModule.setup('docs', app, document);
   }
 
