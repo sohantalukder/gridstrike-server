@@ -2,18 +2,20 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 
 import manifest from "./scenario-pack-manifest.json";
-import { buildScenarioCatalog } from "./scenario-catalog";
+import { buildScenarioCatalog, ScenarioPackManifest } from "./scenario-catalog";
 
 describe("scenario v3 catalog", () => {
   const catalog = buildScenarioCatalog(
     "https://assets.example.test/gridstrike-scenarios/",
-    manifest,
+    manifest as ScenarioPackManifest,
   );
 
   it("publishes all five immutable, verified scenario packs", () => {
     expect(catalog).toHaveLength(5);
     for (const scenario of catalog) {
       expect(scenario.schemaVersion).toBe(3);
+      expect(scenario.requires3DUpdate).toBe(true);
+      expect(scenario.contentBundles).toEqual([]);
       expect(scenario.pack.minClientVersion).toBe("0.2.0");
       expect(scenario.allowedModes).toEqual([
         "practice",
@@ -32,6 +34,41 @@ describe("scenario v3 catalog", () => {
       expect(scenario.pack.sizeBytes).toBeGreaterThan(0);
       expect(scenario.preview.sizeBytes).toBeGreaterThan(0);
     }
+  });
+
+  it("publishes v4 bundle groups without changing scenario IDs", () => {
+    const v4Manifest: ScenarioPackManifest = {
+      ...(manifest as ScenarioPackManifest),
+      "neo-hive-loop": {
+        ...manifest["neo-hive-loop"],
+        schemaVersion: 4 as const,
+        version: "4.0.0",
+        bundles: [
+          {
+            id: "models-4.0.0",
+            group: "models" as const,
+            requiredForPlay: true,
+            sha256: "a".repeat(64),
+            sizeBytes: 1024,
+          },
+        ],
+      },
+    };
+    const [scenario] = buildScenarioCatalog(
+      "https://assets.example.test/gridstrike-scenarios/",
+      v4Manifest,
+    );
+    expect(scenario.id).toBe("neo-hive-loop");
+    expect(scenario.schemaVersion).toBe(4);
+    expect(scenario.requires3DUpdate).toBe(false);
+    expect(scenario.contentBundles[0]).toMatchObject({
+      group: "models",
+      version: "4.0.0",
+      requiredForPlay: true,
+    });
+    expect(scenario.contentBundles[0].url).toContain(
+      "/neo-hive-loop/4.0.0/models-4.0.0.zip",
+    );
   });
 
   it("keeps legacy compatibility fields", () => {

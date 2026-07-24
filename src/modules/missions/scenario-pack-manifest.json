@@ -1,5 +1,6 @@
 {
   "aurora-downtown": {
+    "schemaVersion": 3,
     "version": "3.0.1",
     "packSha256": "fdd8a280b176ec5bbe461891073babc4f4ec5043d80e949ce9230cbc1a55084c",
     "packSizeBytes": 73035,
@@ -7,6 +8,7 @@
     "previewSizeBytes": 65446
   },
   "carbon-works": {
+    "schemaVersion": 3,
     "version": "3.0.1",
     "packSha256": "e496e3de234344961cb287edd718f7af41ad2fd304041655112f6f3ca5fa2566",
     "packSizeBytes": 106086,
@@ -14,6 +16,7 @@
     "previewSizeBytes": 98540
   },
   "metro-gridline": {
+    "schemaVersion": 3,
     "version": "3.0.1",
     "packSha256": "74c6c95728711f40a18d2c071cff3d9a2bf2dec5d6b5daf1f63a40702dfcb0f0",
     "packSizeBytes": 107106,
@@ -21,6 +24,7 @@
     "previewSizeBytes": 99570
   },
   "neo-hive-loop": {
+    "schemaVersion": 3,
     "version": "3.0.1",
     "packSha256": "afa430e251a1687f7fb3d2f0cca14156eaf4fe48b6941943a2f99b608c5acd88",
     "packSizeBytes": 103324,
@@ -28,6 +32,7 @@
     "previewSizeBytes": 95748
   },
   "quantum-corridor": {
+    "schemaVersion": 3,
     "version": "3.0.1",
     "packSha256": "b2ef7f3d9aad424da0109975f9c826678579da55db65e7120ca19e6c4f11ceff",
     "packSizeBytes": 94720,

@@ -1,6 +1,6 @@
-export type MultiplayerMode = 'private' | 'ranked' | 'bot';
-export type MatchStatus = 'countdown' | 'active' | 'finished';
-export type RoomStatus = 'lobby' | 'countdown' | 'inMatch' | 'closed';
+export type MultiplayerMode = "private" | "ranked" | "bot";
+export type MatchStatus = "countdown" | "active" | "finished";
+export type RoomStatus = "lobby" | "countdown" | "inMatch" | "closed";
 
 export interface RoomPlayer {
   playerId: string;
@@ -25,7 +25,13 @@ export interface PlayerIntent {
   movement?: { x?: number; y?: number };
   aim?: { x?: number; y?: number };
   isFiring?: boolean;
+  jump?: boolean;
+  reload?: boolean;
 }
+
+export type PlayerAnimationState =
+  "idle" | "run" | "jump" | "fall" | "fire" | "reload" | "hit" | "death";
+export type PlayerLifeState = "alive" | "dying" | "defeated";
 
 export interface MatchPlayerState {
   playerId: string;
@@ -38,6 +44,16 @@ export interface MatchPlayerState {
   score: number;
   kills: number;
   sequence: number;
+  velocityX: number;
+  velocityY: number;
+  facing: -1 | 1;
+  grounded: boolean;
+  weaponId: string;
+  magazine: number;
+  reserveAmmo: number;
+  reloadingUntil?: number;
+  animationState: PlayerAnimationState;
+  lifeState: PlayerLifeState;
   connected: boolean;
   bot: boolean;
   lastFireAt: number;
@@ -55,7 +71,23 @@ export interface MultiplayerMatch {
   startedAt?: number;
   finishedAt?: number;
   winnerId?: string;
+  draw?: boolean;
+  serverTick: number;
+  lastTickAt: number;
+  timeoutAt: number;
+  scenarioVersion: string;
+  damageEvents: AuthoritativeDamageEvent[];
   players: MatchPlayerState[];
+}
+
+export interface AuthoritativeDamageEvent {
+  actionId: string;
+  serverTick: number;
+  attackerId: string;
+  targetId: string;
+  hitRegion: "head" | "torso";
+  damage: number;
+  targetHealth: number;
 }
 
 export interface QueueEntry {

@@ -5,7 +5,7 @@ export type ScenarioEnemyId =
   "rifleman" | "marksman" | "heavy" | "drone" | "turret" | "commander";
 
 export interface ScenarioCatalogEntry {
-  schemaVersion: 3;
+  schemaVersion: 3 | 4;
   id: string;
   title: string;
   description: string;
@@ -44,15 +44,33 @@ export interface ScenarioCatalogEntry {
     sizeBytes: number;
     minClientVersion: string;
   };
+  contentBundles: Array<{
+    id: string;
+    group: "core" | "models" | "maps" | "audio" | "optional";
+    version: string;
+    requiredForPlay: boolean;
+    url: string;
+    sha256: string;
+    sizeBytes: number;
+  }>;
+  requires3DUpdate: boolean;
   cacheVersion: string;
 }
 
 interface ScenarioPackManifestEntry {
+  schemaVersion?: 3 | 4;
   version: string;
   packSha256: string;
   packSizeBytes: number;
   previewSha256: string;
   previewSizeBytes: number;
+  bundles?: Array<{
+    id: string;
+    group: "core" | "models" | "maps" | "audio" | "optional";
+    requiredForPlay: boolean;
+    sha256: string;
+    sizeBytes: number;
+  }>;
 }
 
 export type ScenarioPackManifest = Record<string, ScenarioPackManifestEntry>;
@@ -214,6 +232,7 @@ const definitions = [
 ] as const;
 
 const emptyManifest: ScenarioPackManifestEntry = {
+  schemaVersion: 3,
   version: "3.0.0",
   packSha256: "",
   packSizeBytes: 0,
@@ -230,7 +249,7 @@ export function buildScenarioCatalog(
     const files = manifest[definition.id] ?? emptyManifest;
     const versionPath = `${definition.id}/${files.version}`;
     return {
-      schemaVersion: 3,
+      schemaVersion: files.schemaVersion ?? 3,
       id: definition.id,
       title: definition.title,
       description: definition.description,
@@ -261,6 +280,12 @@ export function buildScenarioCatalog(
         sizeBytes: files.packSizeBytes,
         minClientVersion: "0.2.0",
       },
+      contentBundles: (files.bundles ?? []).map((bundle) => ({
+        ...bundle,
+        version: files.version,
+        url: `${base}/${versionPath}/${bundle.id}.zip`,
+      })),
+      requires3DUpdate: (files.schemaVersion ?? 3) < 4,
       cacheVersion: files.version,
     };
   });

@@ -19,12 +19,7 @@ const manifestPath = path.join(
 const maxPackBytes = 18 * 1024 * 1024;
 const maxExpandedBytes = 200 * 1024 * 1024;
 const upload = process.argv.includes("--upload");
-const scenarioModes = [
-  "practice",
-  "survival",
-  "missions",
-  "dailyChallenge",
-];
+const scenarioModes = ["practice", "survival", "missions", "dailyChallenge"];
 
 function sha256(buffer) {
   return createHash("sha256").update(buffer).digest("hex");
@@ -33,7 +28,9 @@ function sha256(buffer) {
 function validateScenarioWorld(scenarioId, scenario, files) {
   const world = scenario.world;
   if (!world || !Array.isArray(world.chunks) || world.chunks.length < 5) {
-    throw new Error(`${scenarioId} must publish at least five authored chunks.`);
+    throw new Error(
+      `${scenarioId} must publish at least five authored chunks.`,
+    );
   }
   const chunkIds = new Set();
   for (const chunk of world.chunks) {
@@ -140,7 +137,9 @@ function validateScenarioWorld(scenarioId, scenario, files) {
     }
     geometrySignatures.add(
       chunk.objects
-        .filter((item) => ["floor", "wall", "cover", "hazard"].includes(item.kind))
+        .filter((item) =>
+          ["floor", "wall", "cover", "hazard"].includes(item.kind),
+        )
         .map(
           (item) =>
             `${item.kind}:${item.position.x}:${item.position.z}:${item.size?.x}:${item.size?.z}`,
@@ -161,6 +160,114 @@ function validateScenarioWorld(scenarioId, scenario, files) {
       throw new Error(`${scenarioId} has an invalid 3D ${mode} route.`);
     }
   }
+
+  if (scenario.schemaVersion === 4) {
+    if (world3d.renderer !== "thermion") {
+      throw new Error(`${scenarioId} v4 must use the Thermion renderer.`);
+    }
+    const requiredArchetypes = [
+      "operator",
+      "rifleman",
+      "marksman",
+      "heavy",
+      "drone",
+      "turret",
+      "commander",
+    ];
+    const requiredNodes = [
+      "root",
+      "pelvis",
+      "spine",
+      "neck",
+      "head",
+      "right_hand",
+      "weapon_root",
+      "muzzle",
+      "hit_head",
+      "hit_torso",
+    ];
+    const requiredAnimations = [
+      "idle",
+      "run",
+      "jump",
+      "fall",
+      "fire",
+      "reload",
+      "hit",
+      "death",
+      "respawn",
+    ];
+    const models = new Map(
+      (world3d.characterModels || []).map((model) => [model.archetype, model]),
+    );
+    for (const archetype of requiredArchetypes) {
+      const model = models.get(archetype);
+      if (
+        !model ||
+        typeof model.modelPath !== "string" ||
+        !model.modelPath.endsWith(".glb") ||
+        !files[model.modelPath]
+      ) {
+        throw new Error(
+          `${scenarioId} is missing ${archetype} production GLB.`,
+        );
+      }
+      const nodes = new Set(model.rig?.nodes || []);
+      const animations = new Set(model.rig?.animations || []);
+      if (requiredNodes.some((node) => !nodes.has(node))) {
+        throw new Error(`${scenarioId}/${archetype} has an incomplete rig.`);
+      }
+      if (requiredAnimations.some((name) => !animations.has(name))) {
+        throw new Error(
+          `${scenarioId}/${archetype} has incomplete skeletal animations.`,
+        );
+      }
+      const parents = model.rig?.parents || {};
+      if (
+        parents.head !== "neck" ||
+        parents.neck !== "spine" ||
+        parents.spine !== "pelvis" ||
+        parents.pelvis !== "root"
+      ) {
+        throw new Error(
+          `${scenarioId}/${archetype} has an invalid head ancestry.`,
+        );
+      }
+    }
+  }
+}
+
+function deterministicZip(files) {
+  return Buffer.from(
+    zipSync(files, {
+      level: 9,
+      mtime: new Date("2026-01-01T00:00:00.000Z"),
+    }),
+  );
+}
+
+function groupV4Files(files) {
+  const groups = {
+    core: {},
+    models: {},
+    maps: {},
+    audio: {},
+    optional: {},
+  };
+  for (const [relative, bytes] of Object.entries(files)) {
+    const group =
+      relative === "scenario.json"
+        ? "core"
+        : relative.startsWith("models/")
+          ? "models"
+          : relative.startsWith("maps/") || relative.startsWith("maps3d/")
+            ? "maps"
+            : relative.startsWith("audio/")
+              ? "audio"
+              : "optional";
+    groups[group][relative] = bytes;
+  }
+  return groups;
 }
 
 async function collectFiles(root, current = root) {
@@ -268,9 +375,12 @@ async function main() {
     const scenarioJsonPath = path.join(scenarioRoot, "scenario.json");
     const previewPath = path.join(scenarioRoot, "preview.webp");
     const scenario = JSON.parse(await fs.readFile(scenarioJsonPath, "utf8"));
-    if (scenario.id !== scenarioId || scenario.schemaVersion !== 3) {
+    if (
+      scenario.id !== scenarioId ||
+      ![3, 4].includes(scenario.schemaVersion)
+    ) {
       throw new Error(
-        `${scenarioId}/scenario.json must use matching id and schemaVersion 3.`,
+        `${scenarioId}/scenario.json must use matching id and schemaVersion 3 or 4.`,
       );
     }
     const version = String(scenario.version || "").trim();
@@ -293,12 +403,7 @@ async function main() {
       throw new Error(`${scenarioId} exceeds the 200 MB expanded-size limit.`);
     }
 
-    const zip = Buffer.from(
-      zipSync(files, {
-        level: 9,
-        mtime: new Date("2026-01-01T00:00:00.000Z"),
-      }),
-    );
+    const zip = deterministicZip(files);
     if (zip.byteLength > maxPackBytes) {
       throw new Error(`${scenarioId} exceeds the 18 MB compressed-size limit.`);
     }
@@ -308,12 +413,41 @@ async function main() {
     await fs.writeFile(path.join(scenarioOutput, "scenario.zip"), zip);
     await fs.copyFile(previewPath, path.join(scenarioOutput, "preview.webp"));
 
+    const bundleDescriptors = [];
+    if (scenario.schemaVersion === 4) {
+      for (const [group, groupFiles] of Object.entries(groupV4Files(files))) {
+        if (Object.keys(groupFiles).length === 0) continue;
+        const bundle = deterministicZip(groupFiles);
+        if (bundle.byteLength > maxPackBytes) {
+          throw new Error(`${scenarioId}/${group} exceeds the 18 MB limit.`);
+        }
+        const id = `${group}-${version}`;
+        await fs.writeFile(path.join(scenarioOutput, `${id}.zip`), bundle);
+        bundleDescriptors.push({
+          id,
+          group,
+          requiredForPlay: group !== "optional",
+          sha256: sha256(bundle),
+          sizeBytes: bundle.byteLength,
+        });
+        if (upload) {
+          await uploadObject(
+            `${scenarioId}/${version}/${id}.zip`,
+            bundle,
+            "application/zip",
+          );
+        }
+      }
+    }
+
     manifest[scenarioId] = {
+      schemaVersion: scenario.schemaVersion,
       version,
       packSha256: sha256(zip),
       packSizeBytes: zip.byteLength,
       previewSha256: sha256(preview),
       previewSizeBytes: preview.byteLength,
+      ...(bundleDescriptors.length > 0 ? { bundles: bundleDescriptors } : {}),
     };
 
     if (upload) {
