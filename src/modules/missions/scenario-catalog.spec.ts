@@ -32,6 +32,9 @@ describe("scenario v3 catalog", () => {
       expect(scenario.pack.sha256).toMatch(/^[a-f0-9]{64}$/);
       expect(scenario.preview.sha256).toMatch(/^[a-f0-9]{64}$/);
       expect(scenario.pack.sizeBytes).toBeGreaterThan(0);
+      expect(scenario.pack.expandedSizeBytes).toBeGreaterThan(
+        scenario.pack.sizeBytes,
+      );
       expect(scenario.preview.sizeBytes).toBeGreaterThan(0);
     }
   });

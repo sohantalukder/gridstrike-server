@@ -42,6 +42,7 @@ export interface ScenarioCatalogEntry {
     url: string;
     sha256: string;
     sizeBytes: number;
+    expandedSizeBytes: number;
     minClientVersion: string;
   };
   contentBundles: Array<{
@@ -62,6 +63,7 @@ interface ScenarioPackManifestEntry {
   version: string;
   packSha256: string;
   packSizeBytes: number;
+  expandedSizeBytes?: number;
   previewSha256: string;
   previewSizeBytes: number;
   bundles?: Array<{
@@ -236,6 +238,7 @@ const emptyManifest: ScenarioPackManifestEntry = {
   version: "3.0.0",
   packSha256: "",
   packSizeBytes: 0,
+  expandedSizeBytes: 0,
   previewSha256: "",
   previewSizeBytes: 0,
 };
@@ -278,6 +281,7 @@ export function buildScenarioCatalog(
         url: `${base}/${versionPath}/scenario.zip`,
         sha256: files.packSha256,
         sizeBytes: files.packSizeBytes,
+        expandedSizeBytes: files.expandedSizeBytes ?? 0,
         minClientVersion: "0.2.0",
       },
       contentBundles: (files.bundles ?? []).map((bundle) => ({

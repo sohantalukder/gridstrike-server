@@ -445,6 +445,7 @@ async function main() {
       version,
       packSha256: sha256(zip),
       packSizeBytes: zip.byteLength,
+      expandedSizeBytes: expandedBytes,
       previewSha256: sha256(preview),
       previewSizeBytes: preview.byteLength,
       ...(bundleDescriptors.length > 0 ? { bundles: bundleDescriptors } : {}),

@@ -4,6 +4,7 @@
     "version": "3.0.1",
     "packSha256": "fdd8a280b176ec5bbe461891073babc4f4ec5043d80e949ce9230cbc1a55084c",
     "packSizeBytes": 73035,
+    "expandedSizeBytes": 112094,
     "previewSha256": "12516a1fdf001dd9b03f0e8523b5a657ecb8b511bba546015951159bbabb2c9e",
     "previewSizeBytes": 65446
   },
@@ -12,6 +13,7 @@
     "version": "3.0.1",
     "packSha256": "e496e3de234344961cb287edd718f7af41ad2fd304041655112f6f3ca5fa2566",
     "packSizeBytes": 106086,
+    "expandedSizeBytes": 144673,
     "previewSha256": "3c0344969eba553d8e59dae3de15c10e10885b08e23eed04359459ae96ba8618",
     "previewSizeBytes": 98540
   },
@@ -20,6 +22,7 @@
     "version": "3.0.1",
     "packSha256": "74c6c95728711f40a18d2c071cff3d9a2bf2dec5d6b5daf1f63a40702dfcb0f0",
     "packSizeBytes": 107106,
+    "expandedSizeBytes": 145512,
     "previewSha256": "4beb87291710241d90040f3bb23692baee03f192cf90f83c823fe1b280b1274b",
     "previewSizeBytes": 99570
   },
@@ -28,6 +31,7 @@
     "version": "3.0.1",
     "packSha256": "afa430e251a1687f7fb3d2f0cca14156eaf4fe48b6941943a2f99b608c5acd88",
     "packSizeBytes": 103324,
+    "expandedSizeBytes": 142124,
     "previewSha256": "b2069c5323399eb1a265dc6a8879d2fb1a984a1b0e444df243a8d73faff3bc56",
     "previewSizeBytes": 95748
   },
@@ -36,6 +40,7 @@
     "version": "3.0.1",
     "packSha256": "b2ef7f3d9aad424da0109975f9c826678579da55db65e7120ca19e6c4f11ceff",
     "packSizeBytes": 94720,
+    "expandedSizeBytes": 135373,
     "previewSha256": "d677ef5bbfee14c75fe7571969492e903983bdbb5aa610976a4f664b20e3903f",
     "previewSizeBytes": 87042
   }
